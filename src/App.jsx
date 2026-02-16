@@ -1,11 +1,20 @@
 import { Routes, Route } from "react-router-dom";
 import './index.css'
+
+// Route Components
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+import RoleBasedRoute from "./components/RoleBasedRoute";
+
+// Shared Pages
 import Home from "./shared/pages/Home";
 import Login from "./shared/pages/Login";
 import Register from "./shared/pages/Register";
 import Contact from "./shared/pages/Contact";
 import ServiceProvider from "./shared/pages/ServiceProvider";
 import Works from "./shared/pages/Works";
+
+// User Pages
 import Oreders from "./user/pages/Orders";
 import Balance from "./user/pages/Balance";
 import Profile from "./user/pages/Profile";
@@ -15,6 +24,8 @@ import TripUpload from "./user/pages/TripUpload";
 import ContractUpload from "./user/pages/ContractUpload";
 import Notifications from "./user/pages/Notifications";
 import Tracking from "./user/pages/Tracking";
+
+// Driver Pages
 import DriverOrders from "./driver/pages/DriverOrders";
 import DriverNotifications from "./driver/pages/DriverNotifications";
 import DriverBalance from "./driver/pages/DriverBalance";
@@ -23,40 +34,54 @@ import MissionInroad from "./driver/pages/MissionInroad";
 import MissionStarted from "./driver/pages/MissionStarted";
 import MissionArrived from "./driver/pages/MissionArrived";
 import OrderDetails from "./driver/pages/OrderDetails";
+
+// Admin Pages
 import AdminDashboard from "./admin/pages/AdminDashboard";
 import AddTruck from "./admin/pages/AddTruck";
 import AddDriver from "./admin/pages/AddDriver";
+
+// User Roles
+import { USER_ROLES } from "./utils/constants";
+
 function App() {
   return (
     <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/create-account" element={<Register />} />
-    <Route path="/contact" element={<Contact />} />
-    <Route path="/service-provider" element={<ServiceProvider />} />
-    <Route path="/works" element={<Works />} />
-    <Route path="/user/orders" element={<Oreders />} />
-    <Route path="/user/balance" element={<Balance />} />
-    <Route path="/user/profile" element={<Profile />} />
-    <Route path="/user/provider-account" element={<ProviderAccount />} />
-    <Route path="/user/basic-upload" element={<BasicUpload />} />
-    <Route path="/user/trip-upload" element={<TripUpload />} />
-    <Route path="/user/contract-upload" element={<ContractUpload />} />
-    <Route path="/user/notifications" element={<Notifications />} />
-    <Route path="/user/tracking" element={<Tracking />} />
-    <Route path="/driver/orders" element={<DriverOrders />} />
-    <Route path="/driver/balance" element={<DriverBalance />} />
-    <Route path="/driver/profile" element={<DriverProfile />} />
-    <Route path="/driver/notifications" element={<DriverNotifications />} />
-    <Route path="/driver/mission-in-road" element={<MissionInroad />} />
-    <Route path="/driver/mission-started" element={<MissionStarted />} />
-    <Route path="/driver/mission-arrived" element={<MissionArrived />} />
-    <Route path="/driver/order-details" element={<OrderDetails />} />
-    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-    <Route path="/admin/add-truck" element={<AddTruck />} />
-    <Route path="/admin/add-driver" element={<AddDriver />} />
-
-  </Routes>
+      {/* Public Routes - Accessible to everyone */}
+      <Route path="/" element={<Home />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/service-provider" element={<ServiceProvider />} />
+      <Route path="/works" element={<Works />} />
+      
+      {/* Public Routes - Only accessible when NOT authenticated */}
+      <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+      <Route path="/create-account" element={<PublicRoute><Register /></PublicRoute>} />
+      
+      {/* User Routes - Only accessible to authenticated users with 'user' role */}
+      <Route path="/user/orders" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Oreders /></RoleBasedRoute>} />
+      <Route path="/user/balance" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Balance /></RoleBasedRoute>} />
+      <Route path="/user/profile" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Profile /></RoleBasedRoute>} />
+      <Route path="/user/provider-account" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><ProviderAccount /></RoleBasedRoute>} />
+      <Route path="/user/basic-upload" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><BasicUpload /></RoleBasedRoute>} />
+      <Route path="/user/trip-upload" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><TripUpload /></RoleBasedRoute>} />
+      <Route path="/user/contract-upload" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><ContractUpload /></RoleBasedRoute>} />
+      <Route path="/user/notifications" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Notifications /></RoleBasedRoute>} />
+      <Route path="/user/tracking" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Tracking /></RoleBasedRoute>} />
+      
+      {/* Driver Routes - Only accessible to authenticated users with 'driver' role */}
+      <Route path="/driver/orders" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><DriverOrders /></RoleBasedRoute>} />
+      <Route path="/driver/balance" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><DriverBalance /></RoleBasedRoute>} />
+      <Route path="/driver/profile" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><DriverProfile /></RoleBasedRoute>} />
+      <Route path="/driver/notifications" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><DriverNotifications /></RoleBasedRoute>} />
+      <Route path="/driver/mission-in-road" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><MissionInroad /></RoleBasedRoute>} />
+      <Route path="/driver/mission-started" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><MissionStarted /></RoleBasedRoute>} />
+      <Route path="/driver/mission-arrived" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><MissionArrived /></RoleBasedRoute>} />
+      <Route path="/driver/order-details" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><OrderDetails /></RoleBasedRoute>} />
+      
+      {/* Admin Routes - Only accessible to authenticated users with 'admin' role */}
+      <Route path="/admin/dashboard" element={<RoleBasedRoute allowedRoles={[USER_ROLES.ADMIN]}><AdminDashboard /></RoleBasedRoute>} />
+      <Route path="/admin/add-truck" element={<RoleBasedRoute allowedRoles={[USER_ROLES.ADMIN]}><AddTruck /></RoleBasedRoute>} />
+      <Route path="/admin/add-driver" element={<RoleBasedRoute allowedRoles={[USER_ROLES.ADMIN]}><AddDriver /></RoleBasedRoute>} />
+    </Routes>
   );
 }
 
