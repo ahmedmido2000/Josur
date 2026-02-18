@@ -11,6 +11,7 @@ export default defineConfig({
     }),
   ],
   server: {
+    port: 5173,
     proxy: {
       '/api-proxy': {
         target: 'https://alrajihy.com/demo/jsor',

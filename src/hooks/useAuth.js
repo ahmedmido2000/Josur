@@ -5,6 +5,7 @@ import {
   selectCurrentToken, 
   selectIsAuthenticated,
   selectUserRole,
+  selectUserType,
   setCredentials,
   logout as logoutAction,
 } from '../store/slices/authSlice';
@@ -22,6 +23,7 @@ export const useAuth = () => {
   const token = useSelector(selectCurrentToken);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const role = useSelector(selectUserRole);
+  const userType = useSelector(selectUserType);
   
   // Mutations
   const [loginMutation, { isLoading: isLoggingIn }] = useLoginMutation();
@@ -78,6 +80,7 @@ export const useAuth = () => {
     token,
     isAuthenticated,
     role,
+    userType,
     
     // Methods
     login,

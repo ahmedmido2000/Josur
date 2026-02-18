@@ -4,9 +4,6 @@ import { useGetHomeDataQuery } from '../../api/site/siteApi';
 
 // Import Material Icons
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 
 const ProviderMechanism = () => {
   const { i18n } = useTranslation();
@@ -22,32 +19,8 @@ const ProviderMechanism = () => {
 
   const mechanismSection = homeData?.Sections?.[6]; // ID 74: آلية الانضمام
 
-  const steps = [
-    {
-      id: 1,
-      icon: <LocationOnOutlinedIcon className='fs-1' />,
-      title: i18n.language === 'en' ? 'Registration and Account Creation' : 'التسجيل وإنشاء الحساب',
-      description: i18n.language === 'en' ? 'Create your account as a service provider.' : 'قم بإنشاء حسابك كمزود خدمة.'
-    },
-    {
-      id: 2,
-      icon: <FullscreenOutlinedIcon className='fs-1' />,
-      title: i18n.language === 'en' ? 'Add Truck and Driver Data' : 'إضافة بيانات الشاحنات والسائقين',
-      description: i18n.language === 'en' ? 'Add your truck and driver information.' : 'أدخل بيانات شاحنتك وسائقك.'
-    },
-    {
-      id: 3,
-      icon: <PaidOutlinedIcon className='fs-1' />,
-      title: i18n.language === 'en' ? 'Account Review and Activation' : 'مراجعة الحساب وتفعيله',
-      description: i18n.language === 'en' ? 'Wait for administrative review.' : 'انتظر مراجعة الإدارة لحسابك.'
-    },
-    {
-      id: 4,
-      icon: <ScheduleOutlinedIcon className='fs-1' />,
-      title: i18n.language === 'en' ? 'Start Receiving Orders' : 'البدء في استقبال الطلبات',
-      description: i18n.language === 'en' ? 'You are ready to work!' : 'أنت الآن مستعد للعمل!'
-    }
-  ];
+  // Get provider steps from API and reverse to match logical flow (96 -> 99)
+  const providerSteps = homeData?.ProviderProcess ? [...homeData.ProviderProcess].reverse() : [];
 
   return (
     <div className="container">
@@ -64,20 +37,30 @@ const ProviderMechanism = () => {
               <div className="flow-content mx-auto">
                 {/* Icons Column */}
                 <div className="icons-column">
-                  {steps.map((step, index) => (
+                  {providerSteps.map((step, index) => (
                     <div key={step.id} className="step-icon-container">
-                      <div className="step-icon">{step.icon}</div>
-                      {index < steps.length - 1 && <div className="step-line"></div>}
+                      <div className="step-icon">
+                        {step.image ? (
+                          <img 
+                            src={step.image} 
+                            alt={getLangField(step, 'title')} 
+                            style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+                          />
+                        ) : (
+                          <LocationOnOutlinedIcon className='fs-1' />
+                        )}
+                      </div>
+                      {index < providerSteps.length - 1 && <div className="step-line"></div>}
                     </div>
                   ))}
                 </div>
                 
                 {/* Content Column */}
                 <div className="content-column">
-                  {steps.map((step) => (
+                  {providerSteps.map((step) => (
                     <div key={step.id} className="provider-step-box">
-                      <h3>{step.title}</h3>
-                      <p>{step.description}</p>
+                      <h3>{getLangField(step, 'title')}</h3>
+                      <p>{getLangField(step, 'content')}</p>
                     </div>
                   ))}
                 </div>

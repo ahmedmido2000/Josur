@@ -2,11 +2,32 @@
  * Application Constants
  */
 
-// User Roles
+// User Roles (legacy - for route definitions)
 export const USER_ROLES = {
   USER: 'user',
   DRIVER: 'driver',
   ADMIN: 'admin',
+};
+
+// User Types (from backend - actual values)
+export const USER_TYPES = {
+  CLIENT: 3,     // عميل
+  DRIVER: 4,     // سائق
+  OWNER: 5,      // المالك/الأدمن
+};
+
+// Map user_type to role string
+export const getUserRoleFromType = (userType) => {
+  switch (userType) {
+    case USER_TYPES.CLIENT:
+      return USER_ROLES.USER;
+    case USER_TYPES.DRIVER:
+      return USER_ROLES.DRIVER;
+    case USER_TYPES.OWNER:
+      return USER_ROLES.ADMIN;
+    default:
+      return null;
+  }
 };
 
 // Storage Keys
@@ -22,6 +43,8 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/create-account',
+  ACTIVATE_ACCOUNT: '/activate-account',
+  FORGOT_PASSWORD: '/forgot-password',
   CONTACT: '/contact',
   SERVICE_PROVIDER: '/service-provider',
   WORKS: '/works',
@@ -56,8 +79,11 @@ export const ROUTES = {
 // API Endpoints (relative to base URL)
 export const API_ENDPOINTS = {
   // Auth
-  LOGIN: '/auth/login',
-  REGISTER: '/auth/register',
+  LOGIN: '/api/web/v1/site/login',
+  REGISTER: '/api/web/v1/site/signup',
+  ACTIVATE: '/api/web/v1/site/activate',
+  LISTS: '/api/web/v1/site/lists',
+  PASSWORD_RESET: '/api/web/v1/site/password-reset',
   LOGOUT: '/auth/logout',
   REFRESH_TOKEN: '/auth/refresh',
   GET_CURRENT_USER: '/auth/me',

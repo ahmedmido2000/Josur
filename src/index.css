@@ -67,12 +67,6 @@
   flex-direction: row-reverse !important;
 }
 
-/* RTL Icon Positioning */
-[dir="rtl"] .input-with-icon .map-icon {
-  left: auto;
-  right: 12px;
-}
-
 /* RTL Dropdown Adjustments */
 [dir="rtl"] .dropdown-menu {
   left: auto !important;
@@ -193,18 +187,135 @@ body {
 .hero-section{
   min-height: calc(100vh - 65px);
   width: 100%;
-  background: url(../public/assets/home-bg.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  z-index: 1100000000000 !important;
+  z-index: 10 !important;
+}
+
+@media (max-width: 991px) {
+  .hero-section {
+    min-height: 900px !important;
+  }
+}
+
+.hero-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  background: #1A73E8;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  width: 30px;
+  border-radius: 5px;
+}
+
+/* ===== Custom Hero Navigation Arrows ===== */
+/* Hide default Swiper navigation completely */
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev {
+  display: none !important;
+}
+
+/* Custom navigation buttons */
+.hero-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2000 !important;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #1A73E8 !important;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+.hero-nav-btn:hover {
+  background: #1A73E8;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(26, 115, 232, 0.4);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-nav-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.hero-nav-prev {
+  left: 18px;
+}
+
+.hero-nav-next {
+  right: 18px;
+}
+
+@media (max-width: 768px) {
+  .hero-nav-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+  .hero-nav-prev { left: 10px; }
+  .hero-nav-next { right: 10px; }
+}
+
+/* If Swiper uses a different font for default icons, this helps */
+
+.hero-slide-item {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  padding-bottom: 220px; /* Space for the absolute filter box */
+}
+
+.hero-text-container {
+  margin-top: -60px; /* Slight offset up to center better relative to visible area */
+}
+
+@media (max-width: 991px) {
+  .hero-slide-item {
+    min-height: 900px; /* Fixed height on mobile to prevent squishing content */
+    align-items: flex-start;
+    padding-top: 80px;
+    padding-bottom: 400px;
+  }
+  .hero-text-container {
+    margin-top: 0;
+  }
 }
 
 .hero-title {
   font-size: 48px;
   font-weight: 700;
-  color: #1A73E8; /* Dark gray */
+  color: #1A73E8;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 32px;
+  }
+  .hero-description {
+    font-size: 16px !important;
+  }
 }
 
 .hero-description {
@@ -213,16 +324,30 @@ body {
   max-width: 900px;
 }
 
+.filter-box-container {
+  bottom: 40px !important;
+}
+
+@media (max-width: 991px) {
+  .filter-box-container {
+    bottom: 10px !important;
+    position: absolute;
+    width: 100%;
+  }
+}
+
 /* Filter Box Styles */
 .filter-box {
   background-color: #F4F4F5;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 20px;
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
+  text-align: start;
 }
 
-.serach-filter-title{
+.search-filter-title{
   color: #374151;
   font-size: 20px;
   font-weight: 700;
@@ -232,14 +357,16 @@ body {
 }
 .filter-checkbox-box{
   background-color: #FFFFFF;
-  padding: 10px;
-  width: 160px;
+  padding: 10px 15px;
+  min-width: 160px;
+  width: auto;
   height: 50px;
   border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   cursor: pointer;
+  white-space: nowrap;
 }
 .filter-checkbox-box-2{
   background-color: #F4F4F5;
@@ -319,19 +446,30 @@ body {
 .location-input {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 10px 15px !important; /* Right padding for icon */
+  padding: 10px 40px 10px 15px !important; /* Right padding for icon in LTR */
   font-size: 16px;
   transition: border-color 0.2s ease-in-out;
+  text-align: start;
+}
+
+[dir="rtl"] .location-input {
+  padding: 10px 15px 10px 40px !important; /* Left padding for icon in RTL */
 }
 
 /* Positioning for the icon inside the input */
 .input-with-icon .map-icon {
   position: absolute;
-  left: 12px; /* Position on the right for RTL */
+  right: 12px; /* Position on the right for LTR */
+  left: auto;
   top: 50%;
   transform: translateY(-50%);
   color: #687180;
   font-size: 20px;
+}
+
+[dir="rtl"] .input-with-icon .map-icon {
+  left: 12px; /* Position on the left for RTL */
+  right: auto;
 }
 
 /* Style for the arrow icon between inputs */
@@ -342,26 +480,37 @@ body {
 }
 @media (max-width:915px) {
   .filter-box {
-    width: 700px;
+    width: 95% !important;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 12px;
   }
 }
 @media (max-width:715px) {
-  .filter-box {
-    width: 600px;
-  }
   .arrow-icon{
-    margin: 0 ;
+    margin: 0;
   }
   .location-input{
-    padding: 8px 10px !important;
+    padding: 8px 40px 8px 10px !important;
+  }
+  [dir="rtl"] .location-input {
+    padding: 8px 10px 8px 40px !important;
+  }
+  .location-search-row {
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  .location-input-group {
+    width: 100% !important;
+  }
+  .search-btn-hero {
+    width: 100% !important;
+    margin-top: 10px;
   }
 }
 @media (max-width:615px) {
-  .filter-box {
-    max-width: 500px !important;
-  }
   .location-search-row{
-    flex-wrap: wrap;
+    flex-direction: column !important;
   }
   .arrow-icon {
     display: none;
@@ -372,9 +521,6 @@ body {
   }
 }
 @media (max-width:515px) {
-  .filter-box {
-    max-width: 350px !important;
-  }
   .location-search-row{
     flex-wrap: wrap;
   }
@@ -666,9 +812,23 @@ body {
   font-weight: 400;
   max-width: 490px;
 }
-.partners-img{
-  width: 270px;
-  height: 120px;
+.partner-slide {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+.partners-swiper .swiper-slide {
+  height: auto;
+}
+.partners-img {
+  width: auto;
+  height: 80px;
+  object-fit: contain;
 }
 .app-title{
   font-size: 48px;
@@ -681,6 +841,21 @@ body {
   font-weight: 600;
   color: #687180;
   max-width: 700px;
+}
+.app-mobiles-wrapper {
+  max-height: 580px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+/* Responsive adjust for mobile image clipping */
+@media (max-width: 768px) {
+  .app-mobiles-wrapper {
+    max-height: 300px;
+  }
 }
 footer{
   background-color: #F4F4F5;
@@ -786,11 +961,21 @@ footer{
 /* Password toggle icon */
 .password-toggle {
   position: absolute;
-  top: 61%;
-  left: 10px;
+  top: 50%;
   cursor: pointer;
   color: #687180;
+  z-index: 5;
+  transform: translateY(-50%);
 }
+
+[dir="rtl"] .password-toggle {
+  left: 15px;
+}
+
+[dir="ltr"] .password-toggle {
+  right: 15px;
+}
+
 .form-label{
   color: #374151;
   font-size: 16px;
@@ -801,6 +986,7 @@ footer{
   border-radius: 8px;
   background-color: #F4F4F5 !important;
   padding: 10px 12px;
+  padding-inline-end: 40px !important;
   width: 100%; 
 }
 .login-form{
@@ -975,7 +1161,8 @@ footer{
   background: linear-gradient(90deg, rgba(249, 249, 249, 0) 25.93%, rgba(249, 249, 249, 0.373432) 30.97%, rgba(249, 249, 249, 0.644468) 34.62%, #F9F9F9 43.16%, #F9F9F9 100%);
 }
 .provider-document-img{
-  height: 300px !important;
+  height: auto;
+  max-width: 100%;
   z-index: 0;
   border-radius: 24px;
 }

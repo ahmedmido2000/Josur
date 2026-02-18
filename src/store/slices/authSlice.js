@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getToken, setToken, removeToken, getUserData, setUserData, decodeToken } from '../../utils/tokenStorage';
+import { getToken, setToken, removeToken, getUserData, setUserData } from '../../utils/tokenStorage';
+import { getUserRoleFromType } from '../../utils/constants';
 
 /**
  * Auth Slice
@@ -11,12 +12,13 @@ const initialState = {
   token: getToken(),
   isAuthenticated: !!getToken(),
   role: null,
+  userType: null,
 };
 
-// Decode token to get role if token exists
-if (initialState.token) {
-  const decoded = decodeToken(initialState.token);
-  initialState.role = decoded?.role || null;
+// Set role from stored user data if exists
+if (initialState.user?.user_type) {
+  initialState.userType = initialState.user.user_type;
+  initialState.role = getUserRoleFromType(initialState.user.user_type);
 }
 
 const authSlice = createSlice({
@@ -33,9 +35,9 @@ const authSlice = createSlice({
       state.token = token;
       state.isAuthenticated = true;
       
-      // Decode token to get role
-      const decoded = decodeToken(token);
-      state.role = decoded?.role || user?.role || null;
+      // Set user type and map to role
+      state.userType = user?.user_type || null;
+      state.role = getUserRoleFromType(user?.user_type);
       
       // Store in localStorage
       setToken(token);
@@ -58,6 +60,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.role = null;
+      state.userType = null;
       
       // Clear localStorage
       removeToken();
@@ -71,9 +74,8 @@ const authSlice = createSlice({
       state.token = token;
       setToken(token);
       
-      // Update role from new token
-      const decoded = decodeToken(token);
-      state.role = decoded?.role || null;
+      // Keep existing role and userType from user data
+      // Token refresh doesn't change user identity
     },
   },
 });
@@ -85,5 +87,6 @@ export const selectCurrentUser = (state) => state.auth.user;
 export const selectCurrentToken = (state) => state.auth.token;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectUserRole = (state) => state.auth.role;
+export const selectUserType = (state) => state.auth.userType;
 
 export default authSlice.reducer;

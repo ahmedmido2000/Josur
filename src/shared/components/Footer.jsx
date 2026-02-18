@@ -22,6 +22,7 @@ const Footer = ({ isProviderPage = false }) => {
   };
 
   const footerSection = homeData?.Sections?.[4]; // ID 76: هل أنت مستعد لبدء العمل وزيادة دخلك؟
+  const aboutData = homeData?.About?.[0];
 
   return (
     <footer className='py-4'>
@@ -44,8 +45,20 @@ const Footer = ({ isProviderPage = false }) => {
 
         <div className="row align-items-center">
           <div className="col-md-4 mt-4">
-            <h5 className='footer-main-label'>{t('footer.aboutTitle', 'عن جسور')}</h5>
-            <p className='footer-main-sublabel'>{t('footer.aboutDescription')}</p>
+            {aboutData?.image && (
+              <img 
+                src={aboutData.image} 
+                alt="About Jusoor" 
+                className="img-fluid mb-3" 
+                style={{ maxHeight: '60px' }} 
+              />
+            )}
+            <h5 className='footer-main-label'>
+              {isLoading ? '...' : getLangField(aboutData, 'title') || t('footer.aboutTitle', 'عن جسور')}
+            </h5>
+            <p className='footer-main-sublabel'>
+              {isLoading ? '...' : getLangField(aboutData, 'content') || t('footer.aboutDescription')}
+            </p>
             <div className="d-flex justify-content-start align-items-center flex-wrap gap-3 mb-4">
               <img src="assets/Google Play.png" alt="Google" />
               <img src="assets/App Store.png" alt="App" />

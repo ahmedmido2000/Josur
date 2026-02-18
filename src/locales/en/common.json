@@ -19,7 +19,9 @@
         "confirm": "Confirm",
         "close": "Close",
         "upload": "Upload",
-        "download": "Download"
+        "download": "Download",
+        "logout": "Logout",
+        "sendRequest": "Send Request"
     },
     "messages": {
         "loading": "Loading...",
@@ -30,14 +32,29 @@
         "saved": "Saved successfully",
         "updated": "Updated successfully",
         "deleted": "Deleted successfully",
-        "created": "Created successfully"
+        "created": "Created successfully",
+        "responseWindow": "You may receive a response within 48 hours"
+    },
+    "labels": {
+        "requiredService": "Required Service",
+        "note": "Note",
+        "selectService": "Select a Service"
+    },
+    "options": {
+        "contractRequest": "Contract Request"
     },
     "navigation": {
         "home": "Home",
         "contact": "Contact Us",
         "about": "About Us",
         "services": "Services",
-        "works": "Works"
+        "works": "Works",
+        "providers": "Service Providers",
+        "profile": "Profile"
+    },
+    "partners": {
+        "title": "Success Partners",
+        "content": "We make the shipping chain from start to finish easier and smoother for you, transforming complex shipping into a seamless experience."
     },
     "forms": {
         "required": "This field is required",
@@ -55,6 +72,9 @@
         "cancelled": "Cancelled",
         "inProgress": "In Progress"
     },
+    "faq": {
+        "title": "Frequently Asked Questions"
+    },
     "hero": {
         "title": "Smart Solutions for Cargo Shipping & Delivery",
         "description": "Josur bridges the gap between companies in need of shipping and reliable service providers. Get instant quotes, track shipments, and manage your logistics seamlessly.",
@@ -71,5 +91,17 @@
         "contract": "Contract Package Request",
         "singleLocation": "Single Delivery Location",
         "multipleLocations": "Multiple Delivery Locations"
+    },
+    "footer": {
+        "solutionTitle": "Smart solutions for shipping and delivering goods",
+        "aboutTitle": "About Jusoor",
+        "aboutDescription": "Jusoor is a digital platform specialized in shipping and delivering goods via trucks, connecting customers and transport service providers with ease and reliability.",
+        "links": {
+            "shortcuts": "Quick Links",
+            "home": "Home",
+            "business": "Business",
+            "providers": "Service Providers",
+            "contact": "Contact Us"
+        }
     }
 }

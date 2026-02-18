@@ -13,28 +13,36 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const Parteners = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
   const { data: homeData, isLoading } = useGetHomeDataQuery();
 
   // Helper to get localized field from API
   const getLangField = (item, field) => {
     if (!item) return '';
-    const isEn = i18n.language === 'en';
+    const isEn = i18n.language && i18n.language.startsWith('en');
     const enField = `${field}_en`;
-    return (isEn && item[enField]) ? item[enField] : item[field];
+    const arField = `${field}_ar`;
+    
+    if (isEn) {
+      return item[enField] || item[field];
+    } else {
+      return item[arField] || item[field];
+    }
   };
 
-  const partnersSection = homeData?.Sections?.[13]; // ID 67: شركاء النجاح
+  const partnersSection = homeData?.Sections?.find(s => s.id === 67); // Using find by ID 67
   const partnerLogos = homeData?.Partners || [];
+
+  const isEn = i18n.language && i18n.language.startsWith('en');
 
   return (
     <section>
       <div className="container my-5 text-center">
         <h2 className='parteners-title mb-3'>
-          {isLoading ? '...' : getLangField(partnersSection, 'title') || 'شركاء النجاح'}
+          {isLoading ? '...' : (isEn ? (partnersSection?.title_en !== partnersSection?.title ? partnersSection?.title_en : t('partners.title')) : (partnersSection?.title || t('partners.title')))}
         </h2>
-        <p className='parteners-desc mb-5'>
-          {isLoading ? '...' : getLangField(partnersSection, 'content')}
+        <p className='parteners-desc mb-5 mx-auto'>
+          {isLoading ? '...' : (isEn ? (partnersSection?.content_en !== partnersSection?.content ? partnersSection?.content_en : t('partners.content')) : (partnersSection?.content || t('partners.content')))}
         </p>
       </div>
       
@@ -72,9 +80,15 @@ const Parteners = () => {
           className="partners-swiper"
         >
           {partnerLogos.map((partner) => (
-            <SwiperSlide key={partner.id}>
-              <div className="partner-slide">
-                <img src={partner.image} alt={getLangField(partner, 'title')} className="img-fluid partners-img" />
+            <SwiperSlide key={partner.id} className="d-flex align-items-stretch">
+              <div className="partner-slide text-center p-3 w-100">
+                <img src={partner.image} alt={getLangField(partner, 'title')} className="img-fluid partners-img mb-3" />
+                <h5 className="partner-name mb-2">
+                  {getLangField(partner, 'title')}
+                </h5>
+                <p className="partner-content small text-muted mb-0">
+                  {getLangField(partner, 'content')}
+                </p>
               </div>
             </SwiperSlide>
           ))}

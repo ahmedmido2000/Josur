@@ -23,13 +23,48 @@ export const authApi = baseApi.injectEndpoints({
     
     /**
      * Register
-     * POST /auth/register
+     * POST /api/web/v1/site/signup
      */
     register: builder.mutation({
       query: (userData) => ({
         url: API_ENDPOINTS.REGISTER,
         method: 'POST',
         body: userData,
+      }),
+    }),
+    
+    /**
+     * Activate Account
+     * POST /api/web/v1/site/activate
+     */
+    activate: builder.mutation({
+      query: (activationData) => ({
+        url: API_ENDPOINTS.ACTIVATE,
+        method: 'POST',
+        body: activationData,
+      }),
+    }),
+    
+    /**
+     * Get Lists (Countries and Cities)
+     * GET /api/web/v1/site/lists
+     */
+    getLists: builder.query({
+      query: () => API_ENDPOINTS.LISTS,
+      transformResponse: (response) => {
+        return response.status === 1 ? response.data[0] : null;
+      },
+    }),
+
+    /**
+     * Password Reset
+     * POST /api/web/v1/site/password-reset
+     */
+    passwordReset: builder.mutation({
+      query: (data) => ({
+        url: API_ENDPOINTS.PASSWORD_RESET,
+        method: 'POST',
+        body: data,
       }),
     }),
     
@@ -71,6 +106,9 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useActivateMutation,
+  useGetListsQuery,
+  usePasswordResetMutation,
   useLogoutMutation,
   useGetCurrentUserQuery,
   useRefreshTokenMutation,

@@ -11,19 +11,27 @@ const WorksDocuments = () => {
   // Helper to get localized field from API
   const getLangField = (item, field) => {
     if (!item) return '';
-    const isEn = i18n.language === 'en';
+    const isEn = i18n.language && i18n.language.startsWith('en');
     const enField = `${field}_en`;
-    return (isEn && item[enField]) ? item[enField] : item[field];
+    const arField = `${field}_ar`;
+    
+    if (isEn) {
+      return item[enField] || item[field];
+    } else {
+      return item[arField] || item[field];
+    }
   };
 
-  const docsSection = homeData?.Sections?.[9]; // ID 71: الوثائق المطلوبة لإتمام الاتفاق
+  const docsSection = homeData?.Sections?.find(s => s.id === 79) || homeData?.Sections?.[79]; // Using ID 79
 
   const docItems = [
-    i18n.language === 'en' ? 'Commercial Register' : 'السجل التجاري',
-    i18n.language === 'en' ? 'Authorized Person ID' : 'هوية المفوض',
-    i18n.language === 'en' ? 'Signature Authorization' : 'تفويض التوقيع',
-    i18n.language === 'en' ? 'Copy of Articles of Association (if any)' : 'نسخة من عقد التأسيس (إن وُجد)'
+    i18n.language?.startsWith('en') ? 'Commercial Register' : 'السجل التجاري',
+    i18n.language?.startsWith('en') ? 'Authorized Person ID' : 'هوية المفوض',
+    i18n.language?.startsWith('en') ? 'Signature Authorization' : 'تفويض التوقيع',
+    i18n.language?.startsWith('en') ? 'Copy of Articles of Association (if any)' : 'نسخة من عقد التأسيس (إن وُجد)'
   ];
+
+  const isEn = i18n.language && i18n.language.startsWith('en');
 
   return (
     <section>
@@ -31,10 +39,10 @@ const WorksDocuments = () => {
         <div className="row align-items-center">
           <div className="col-md-6 px-4">
             <h3 className='login-title'>
-              {isLoading ? '...' : getLangField(docsSection, 'title') || 'الوثائق المطلوبة لإتمام الاتفاق'}
+              {isLoading ? '...' : (isEn ? (docsSection?.title_en || docsSection?.title) : (docsSection?.title || 'الوثائق المطلوبة لإتمام الاتفاق'))}
             </h3>
             <p className='services-card-desc'>
-              {isLoading ? '...' : getLangField(docsSection, 'content')}
+              {isLoading ? '...' : (isEn ? (docsSection?.content_en || docsSection?.content) : (docsSection?.content))}
             </p>
             {docItems.map((item, index) => (
               <div key={index} className='document-li d-flex gap-1 align-items-center'>

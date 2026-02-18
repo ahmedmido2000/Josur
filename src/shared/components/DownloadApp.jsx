@@ -17,8 +17,8 @@ const DownloadApp = () => {
   const appSection = homeData?.Sections?.[12]; // ID 68: احصل على تطبيقنا المحمول المجاني
 
   return (
-    <section className='mt-5'>
-      <div className="container">
+    <section className='mt-5 pt-5 pb-0 mb-0 overflow-hidden'>
+      <div className="container pb-0 mb-0">
         <div className="mx-auto text-center">
           <h1 className="app-title mx-auto mb-4">
             {isLoading ? '...' : getLangField(appSection, 'title') || 'احصل على تطبيقنا المحمول المجاني'}
@@ -31,7 +31,9 @@ const DownloadApp = () => {
             <img src="assets/Google Play.png" alt="Google" />
             <img src="assets/App Store.png" alt="App" />
           </div>
-          <img src={appSection?.image || "assets/mobiles.jpg"} className='container-fluid' alt="mobiles" />
+          <div className="app-mobiles-wrapper">
+            <img src={appSection?.image || "assets/mobiles.jpg"} className='img-fluid' alt="mobiles" />
+          </div>
         </div>
       </div>
     </section>

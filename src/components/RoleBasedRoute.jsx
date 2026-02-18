@@ -25,6 +25,7 @@ const RoleBasedRoute = ({ children, allowedRoles }) => {
   
   if (!rolesArray.includes(role)) {
     // Redirect to appropriate dashboard based on user's actual role
+    // role is already mapped from user_type in authSlice
     switch (role) {
       case 'admin':
         return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
@@ -33,7 +34,8 @@ const RoleBasedRoute = ({ children, allowedRoles }) => {
       case 'user':
         return <Navigate to={ROUTES.USER_ORDERS} replace />;
       default:
-        return <Navigate to={ROUTES.HOME} replace />;
+        // If no valid role, redirect to login
+        return <Navigate to={ROUTES.LOGIN} replace />;
     }
   }
   

@@ -2,16 +2,18 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { useAuth } from '../../hooks/useAuth';
 
 const Navbar = () => {
   const location = useLocation();
   const { t } = useTranslation('common');
+  const { isAuthenticated, user, logout } = useAuth();
   
   // Navigation items with translation keys
   const navItems = [
     { name: t('navigation.home'), path: '/' },
     { name: t('navigation.works'), path: '/works' },
-    { name: 'مزودي الخدمات', path: '/service-provider' },
+    { name: t('navigation.providers'), path: '/service-provider' },
     { name: t('navigation.about'), path: '/about' },
     { name: t('navigation.contact'), path: '/contact' }
   ];
@@ -57,12 +59,30 @@ const Navbar = () => {
               <LanguageSwitcher />
             </li>
             <li className="nav-item d-flex align-items-center gap-2">
-              <Link to="/login" className="login-button text-decoration-none">
-                {t('auth:login.loginButton', 'سجل الدخول')}
-              </Link>
-              <Link to="/login" className="join-button text-decoration-none">
-                انضم كسائق
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link to="/user/profile" className="login-button text-decoration-none d-flex align-items-center gap-2">
+                    <img 
+                      src={user?.avatar || "assets/avatar.png"} 
+                      alt="avatar" 
+                      style={{ width: '25px', height: '25px', borderRadius: '50%', objectFit: 'cover' }} 
+                    />
+                    {user?.name || t('navigation.profile')}
+                  </Link>
+                  <button onClick={logout} className="join-button text-decoration-none border-0">
+                    {t('buttons.logout', 'تسجيل الخروج')}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="login-button text-decoration-none">
+                    {t('auth:login.loginButton', 'سجل الدخول')}
+                  </Link>
+                  <Link to="/login" className="join-button text-decoration-none">
+                    {t('hero.joinDriver', 'انضم كسائق')}
+                  </Link>
+                </>
+              )}
             </li>
           </ul>
         </div>

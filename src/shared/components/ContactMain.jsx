@@ -14,7 +14,7 @@ const ContactMain = () => {
     return (isEn && item[enField]) ? item[enField] : item[field];
   };
 
-  const contactSection = homeData?.Sections?.[3]; // ID 77: تواصل معنا
+  const contactSection = homeData?.Sections?.find(section => section.id === 71);
 
   return (
     <section className='pt-md-5 pb-5'>

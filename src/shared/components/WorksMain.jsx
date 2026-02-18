@@ -7,15 +7,24 @@ const WorksMain = () => {
   const { t, i18n } = useTranslation(['common', 'auth']);
   const { data: homeData, isLoading } = useGetHomeDataQuery();
 
-  // Helper to get localized field from API
+  // Helper to get localized field from API with fallback for bad API data
   const getLangField = (item, field) => {
     if (!item) return '';
-    const isEn = i18n.language === 'en';
+    const isEn = i18n.language && i18n.language.startsWith('en');
     const enField = `${field}_en`;
-    return (isEn && item[enField]) ? item[enField] : item[field];
+    const arField = `${field}_ar`;
+    
+    if (isEn) {
+      if (!item[enField] || item[enField] === item[field]) return null;
+      return item[enField];
+    } else {
+      return item[arField] || item[field];
+    }
   };
 
-  const worksMainSection = homeData?.Sections?.[10]; // ID 70: ما هي خدمة الأعمال؟
+  const worksMainSection = homeData?.Sections?.find(section => section.id === 78);
+
+  const isEn = i18n.language && i18n.language.startsWith('en');
 
   return (
     <section className=''>
@@ -23,7 +32,9 @@ const WorksMain = () => {
         <div className="row align-items-center">
           <div className="col-md-6 mt-4 order-2 order-md-1">
             <div className="shadow p-3 rounded-4 h-100">
-              <h2 className='services-card-title mb-3'>{i18n.language === 'en' ? 'Choose Service' : 'اختر الخدمة'}</h2>
+              <h2 className='services-card-title mb-3'>
+                {isLoading ? '...' : (getLangField(worksMainSection, 'title') || (isEn ? 'Choose Service' : 'اختر الخدمة'))}
+              </h2>
               <div className="row">
                 <div className="col-12">
                   <div className="mb-3">
@@ -47,10 +58,11 @@ const WorksMain = () => {
                 </div>
                 <div className="col-12">
                   <div className="mb-3">
-                    <label className="form-label mb-1">{i18n.language === 'en' ? 'Required Service' : 'الخدمة المطلوبة'}</label>
+                    <label className="form-label mb-1">{t('common:labels.requiredService')}</label>
                     <div className="select-wrapper position-relative">
-                      <select className="form-select form-input py-2 pe-3">
-                        <option value="طلب تعاقد ">{i18n.language === 'en' ? 'Contract Request' : 'طلب تعاقد '}</option>
+                      <select className="form-select form-input py-2 pe-3" defaultValue="">
+                        <option value="" disabled>{t('common:labels.selectService')}</option>
+                        <option value="contract">{t('common:options.contractRequest')}</option>
                       </select>
                       <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
                         <ExpandMoreIcon />
@@ -61,14 +73,14 @@ const WorksMain = () => {
                 <div className="col-12">
                   <div className="mb-3">
                     <div className="works-note">
-                      <h3 className='footer-link-title'>{i18n.language === 'en' ? 'Note' : 'ملاحظة'}</h3>
-                      <p className='footer-link m-0'>{i18n.language === 'en' ? 'You may receive a response within 48 hours' : 'قد تتلقى الرد خلال 48 ساعة'}</p>
+                      <h3 className='footer-link-title'>{t('common:labels.note')}</h3>
+                      <p className='footer-link m-0'>{t('common:messages.responseWindow')}</p>
                     </div>
                   </div>
                 </div>
                 <div className="col-12 text-start">
                   <button className="login-button py-2 rounded-3">
-                    {i18n.language === 'en' ? 'Send Request' : 'ارسال الطلب'}
+                    {t('common:buttons.sendRequest')}
                   </button>
                 </div>
               </div>
@@ -79,17 +91,18 @@ const WorksMain = () => {
               <div className="works-overlay rounded-4"></div>
               <div className="works-img-texts px-4">
                 <img src="assets/logo.png" alt="logo" />
-                <h5>
-                  {isLoading ? '...' : getLangField(worksMainSection, 'title') || 'ما هي خدمة الأعمال؟'}
+                <h5 className="mt-3">
+                  {isLoading ? '...' : (getLangField(worksMainSection, 'title') || (isEn ? 'What is Business Service?' : 'ما هي خدمة الأعمال؟'))}
                 </h5>
                 <h6>
-                  {isLoading ? '...' : getLangField(worksMainSection, 'content')}
+                  {isLoading ? '...' : (getLangField(worksMainSection, 'content') || worksMainSection?.content)}
                 </h6>
               </div>
               <img 
                 src={worksMainSection?.image || "assets/works-main-img.png"} 
-                className='img-fluid w-100 rounded-4 works-main-img' 
+                className='img-fluid w-100 rounded-4 works-main-img shadow-sm' 
                 alt="contact" 
+                style={{ objectFit: 'cover', minHeight: '465px' }}
               />
             </div>
           </div>
