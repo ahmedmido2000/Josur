@@ -91,14 +91,14 @@ export const API_ENDPOINTS = {
   // User
   USER_ORDERS: '/user/orders',
   USER_BALANCE: '/api/web/v1/site/user-balance',
-  USER_PROFILE: '/user/profile',
+  USER_PROFILE: '/api/web/v1/site/profile',
   USER_DOCUMENTS: '/user/documents',
 
   NOTIFICATIONS: '/api/web/v1/site/notification',
   // Driver
   DRIVER_ORDERS: '/driver/orders',
   DRIVER_BALANCE: '/api/web/v1/site/user-balance',
-  DRIVER_PROFILE: '/driver/profile',
+  DRIVER_PROFILE: '/api/web/v1/site/profile',
 
   // Admin
   ADMIN_DASHBOARD: '/admin/dashboard',
@@ -111,6 +111,10 @@ export const API_ENDPOINTS = {
   SITE_CONTACT: '/api/web/v1/site/contact',
   SITE_TERMS: '/api/web/v1/site/term',
   NOTIFICATION_BADGE: '/api/web/v1/site/notification-budge',
+  CREATE_NORMAL_REQUEST: '/api/web/v1/site/create-normal-request',
+  CREATE_TRIP_REQUEST: '/api/web/v1/site/create-trip-request',
+  CREATE_CONTRACT_REQUEST: '/api/web/v1/site/create-contract-request',
+  SUB_TRUCK: '/api/web/v1/site/sub-truck',
 };
 
 // HTTP Status Codes

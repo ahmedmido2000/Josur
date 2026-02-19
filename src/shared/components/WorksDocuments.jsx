@@ -37,13 +37,11 @@ const WorksDocuments = () => {
     <section>
       <div className="container provider-documents rounded-5 my-5">
         <div className="row align-items-center">
-          <div className="col-md-6 px-4">
+          <div className="col-md-5 px-4">
             <h3 className='login-title'>
               {isLoading ? '...' : (isEn ? (docsSection?.title_en || docsSection?.title) : (docsSection?.title || 'الوثائق المطلوبة لإتمام الاتفاق'))}
             </h3>
-            <p className='services-card-desc'>
-              {isLoading ? '...' : (isEn ? (docsSection?.content_en || docsSection?.content) : (docsSection?.content))}
-            </p>
+            
             {docItems.map((item, index) => (
               <div key={index} className='document-li d-flex gap-1 align-items-center'>
                 <FontAwesomeIcon icon={faCheckSquare} className='document-icon' />
@@ -51,7 +49,8 @@ const WorksDocuments = () => {
               </div>
             ))}
           </div>
-          <div className="col-md-6">
+          <div className="col-md-7">
+          
             <img 
               src={docsSection?.image || "assets/provider-document-img.png"} 
               className='img-fluid works-document-img w-100' 

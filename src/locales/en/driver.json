@@ -8,8 +8,31 @@
         "missions": {
             "inRoad": "On the Road",
             "started": "Mission Started",
-            "arrived": "Arrived"
-        }
+            "arrived": "Arrived"        },
+        "profile": {
+            "title": "Profile",
+            "personalInfo": "Personal Information",
+            "truckInfo": "Truck Information",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "country": "Country",
+            "phone": "Phone Number",
+            "city": "City",
+            "selectCountry": "Select Country",
+            "selectCity": "Select City",
+            "truckType": "Truck Type",
+            "truckPlate": "Truck Plate Number",
+            "productionYear": "Production Year",
+            "loadCapacity": "Load Capacity (Tons)",
+            "truckStatus": "Truck Status",
+            "changeTruckPhoto": "Change Truck Photo",
+            "edit": "Edit",
+            "save": "Save Changes",
+            "cancel": "Cancel",
+            "submitting": "Saving...",
+            "updateSuccess": "Profile updated successfully",
+            "updateError": "Error updating profile"        }
     },
     "orders": {
         "title": "Driver Orders",

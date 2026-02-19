@@ -45,12 +45,78 @@ export const siteApi = baseApi.injectEndpoints({
         return response.status === 1 ? response.data[0] : null;
       },
     }),
+
+    /**
+     * Get Lists (GoodType, TruckType, etc.)
+     * GET /api/web/v1/site/lists
+     */
+    getLists: builder.query({
+      query: () => API_ENDPOINTS.LISTS,
+      transformResponse: (response) => {
+        return response.status === 1 ? response.data[0] : null;
+      },
+    }),
+
+    /**
+     * Get Sub Trucks by Truck ID
+     * GET /api/web/v1/site/sub-truck?id={id}
+     */
+    getSubTrucks: builder.query({
+      query: (id) => `${API_ENDPOINTS.SUB_TRUCK}?id=${id}`,
+      transformResponse: (response) => {
+        return response.status === 1 ? response.data[0] : [];
+      },
+    }),
+
+    /**
+     * Create Normal Request
+     * POST /api/web/v1/site/create-normal-request
+     */
+    createNormalRequest: builder.mutation({
+      query: (requestData) => ({
+        url: API_ENDPOINTS.CREATE_NORMAL_REQUEST,
+        method: 'POST',
+        params: { 'access-token': localStorage.getItem('josur_auth_token') }, 
+        body: requestData,
+      }),
+    }),
+
+    /**
+     * Create Trip Request
+     * POST /api/web/v1/site/create-trip-request
+     */
+    createTripRequest: builder.mutation({
+      query: (requestData) => ({
+        url: API_ENDPOINTS.CREATE_TRIP_REQUEST,
+        method: 'POST',
+        params: { 'access-token': localStorage.getItem('josur_auth_token') },
+        body: requestData,
+      }),
+    }),
+
+    /**
+     * Create Contract Request
+     * POST /api/web/v1/site/create-contract-request
+     */
+    createContractRequest: builder.mutation({
+      query: (requestData) => ({
+        url: API_ENDPOINTS.CREATE_CONTRACT_REQUEST,
+        method: 'POST',
+        params: { 'access-token': localStorage.getItem('josur_auth_token') },
+        body: requestData,
+      }),
+    }),
   }),
 });
 
-// Export hooks for usage in components
 export const {
   useGetHomeDataQuery,
   useSubmitContactMutation,
   useGetTermsDataQuery,
+  useGetListsQuery,
+  useGetSubTrucksQuery,
+  useCreateNormalRequestMutation,
+  useCreateTripRequestMutation,
+  useCreateContractMutation, // Fix: naming convention
+  useCreateContractRequestMutation,
 } = siteApi;

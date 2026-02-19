@@ -40,12 +40,12 @@ export const driverApi = baseApi.injectEndpoints({
     
     /**
      * Update Driver Profile
-     * PUT /driver/profile
+     * POST /driver/profile
      */
     updateDriverProfile: builder.mutation({
       query: (profileData) => ({
         url: API_ENDPOINTS.DRIVER_PROFILE,
-        method: 'PUT',
+        method: 'POST',
         body: profileData,
       }),
       invalidatesTags: ['Profile', 'User'],

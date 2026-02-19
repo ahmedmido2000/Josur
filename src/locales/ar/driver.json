@@ -9,6 +9,31 @@
             "inRoad": "في الطريق",
             "started": "بدأت المهمة",
             "arrived": "وصلت"
+        },
+        "profile": {
+            "title": "الملف الشخصي",
+            "personalInfo": "المعلومات الشخصية",
+            "truckInfo": "معلومات الشاحنة",
+            "firstName": "الاسم الأول",
+            "lastName": "الاسم الأخير",
+            "email": "البريد الإلكتروني",
+            "country": "المنطقة",
+            "phone": "رقم الهاتف",
+            "city": "الموقع",
+            "selectCountry": "اختر المنطقة",
+            "selectCity": "اختر الموقع",
+            "truckType": "نوع الشاحنة",
+            "truckPlate": "رقم تسجيل الشاحنة",
+            "productionYear": "سنة الصنع",
+            "loadCapacity": "سعة الحمولة (بالطن)",
+            "truckStatus": "حالة الشاحنة",
+            "changeTruckPhoto": "تغيير صورة الشاحنة",
+            "edit": "تعديل",
+            "save": "حفظ التعديلات",
+            "cancel": "إلغاء",
+            "submitting": "جاري الحفظ...",
+            "updateSuccess": "تم تحديث الملف الشخصي بنجاح",
+            "updateError": "حدث خطأ أثناء تحديث الملف الشخصي"
         }
     },
     "orders": {

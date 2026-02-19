@@ -1,12 +1,14 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import UserNavbar from '../components/UserNavbar'
 import Footer from '../../shared/components/Footer'
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { useGetListsQuery, useGetSubTrucksQuery, useCreateContractRequestMutation } from "../../api/site/siteApi";
+import { toast } from "react-toastify";
 
 // Fix for default markers in react-leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,100 +19,119 @@ L.Icon.Default.mergeOptions({
 });
 
 const ContractUpload = () => {
-    const [selectedService, setSelectedService] = useState(null);
+    const { t, i18n } = useTranslation('user');
+    const { data: listsData } = useGetListsQuery();
+    const [truckId, setTruckId] = useState("");
+    const { data: subTrucksData } = useGetSubTrucksQuery(truckId, { skip: !truckId });
+    const [createContractRequest, { isLoading: isSubmitting }] = useCreateContractRequestMutation();
+
     const dateRef = useRef(null);
-    const timeRef = useRef(null);
   
+    const [cityId, setCityId] = useState("");
+    const [selectedService, setSelectedService] = useState(null); // This is sub_truck_id
+    const [numTrips, setNumTrips] = useState("1");
+    const [goodTypeId, setGoodTypeId] = useState("");
     const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
+    const [contractDurationId, setContractDurationId] = useState(null);
     
     // State for map markers
-    const [pickupLocation, setPickupLocation] = useState([24.7136, 46.6753]); // Default to Riyadh, Saudi Arabia
-    const [deliveryLocation, setDeliveryLocation] = useState([24.7136, 46.6753]); // Default to Riyadh, Saudi Arabia
-    
-    // State for selected month duration
-    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [location, setLocation] = useState({ lat: 24.7136, lng: 46.6753, address: "" });
 
-const serviceOptions = [
-  {
-    id: "service1",
-    image: "../assets/truck-size-1.png",
-  },
-  {
-    id: "service2",
-    image: "../assets/truck-size-2.png",
-  },
-  {
-    id: "service3",
-    image: "../assets/truck-size-3.png",
-  },
-  {
-    id: "service4",
-    image: "../assets/truck-size-4.png",
-  },
-];
+    const [open, setOpen] = useState(false);
+    const [selectedTruck, setSelectedTruck] = useState(null);
+    const isRtl = i18n.language === 'ar';
 
-  const truckOptions = [
-    {
-      value: "trailer",
-      label: "تريلا",
-      image: "../assets/filter-card-img-1.png",
-    },
-    {
-      value: "dina",
-      label: "دينا",
-      image: "../assets/filter-card-img-2.png",
-    },
-    {
-      value: "refrigerated",
-      label: "ثلاجة",
-      image: "../assets/filter-card-img-3.png",
-    },
-  ];
+    // Helper to get localized field from API
+    const getLangField = (item, field) => {
+      if (!item) return '';
+      const isEn = i18n.language && i18n.language.startsWith('en');
+      const enField = `${field}_en`;
+      const arField = `${field}_ar`;
+      
+      if (isEn && item[enField]) return item[enField];
+      if (!isEn && item[arField]) return item[arField];
+      
+      return item[field] || '';
+    };
 
-  // Month duration options
-  const monthOptions = [
-    { id: "1month", label: "1 شهر" },
-    { id: "2months", label: "2 أشهر" },
-    { id: "3months", label: "3 أشهر" },
-  ];
+    const handleSelect = (option) => {
+      setSelectedTruck(option);
+      setTruckId(option.id);
+      setOpen(false);
+      setSelectedService(null);
+    };
 
-  const [open, setOpen] = useState(false);
-  const [selectedTruck, setSelectedTruck] = useState(null);
+    const handleSubmit = async () => {
+      if (!cityId || !truckId || !selectedService || !numTrips || !goodTypeId || !date || !contractDurationId) {
+        toast.error(t('contractUpload.errorFillAll'));
+        return;
+      }
 
-  const handleSelect = (option) => {
-    setSelectedTruck(option);
-    setOpen(false);
-  };
+      // Format date to DD-MM-YYYY
+      const [year, month, day] = date.split('-');
+      const formattedDate = `${day}-${month}-${year}`;
 
-  // Function to handle map clicks
-  const handleMapClick = (e) => {
-    // You can implement logic to determine if this is pickup or delivery location
-    // For now, we'll just update the pickup location
-    setPickupLocation([e.latlng.lat, e.latlng.lng]);
-  };
+      const formData = new FormData();
+      formData.append('in_city', cityId);
+      formData.append('lat_from', location.lat);
+      formData.append('lang_from', location.lng);
+      formData.append('truck_id', truckId);
+      formData.append('sub_truck_id', selectedService);
+      formData.append('number', numTrips);
+      formData.append('good_type_id', goodTypeId);
+      formData.append('date', formattedDate);
+      formData.append('contract_duration_id', contractDurationId);
+
+      try {
+        const response = await createContractRequest(formData).unwrap();
+        if (response.status === 1) {
+          toast.success(t('contractUpload.successMessage'));
+          
+          // Clear all fields
+          setCityId("");
+          setTruckId("");
+          setSelectedTruck(null);
+          setSelectedService(null);
+          setNumTrips("1");
+          setGoodTypeId("");
+          setDate("");
+          setContractDurationId(null);
+        } else {
+          toast.error(response.message || t('contractUpload.errorMessage'));
+        }
+      } catch (error) {
+        toast.error(t('contractUpload.errorMessage'));
+      }
+    };
+
+    // Map events component
+    const MapEvents = () => {
+      useMapEvents({
+        click: (e) => {
+          setLocation({ lat: e.latlng.lat, lng: e.latlng.lng, address: "" });
+        },
+      });
+      return null;
+    };
   
-  // Map component
-  const MapComponent = () => (
-    <MapContainer 
-      center={pickupLocation} 
-      zoom={13} 
-      className="rounded-3"
-      style={{ height: '95%', minHeight: '400px', width: '100%' }}
-      onClick={handleMapClick}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <Marker position={pickupLocation}>
-        <Popup>موقع الشحن</Popup>
-      </Marker>
-      <Marker position={deliveryLocation}>
-        <Popup>موقع التوصيل</Popup>
-      </Marker>
-    </MapContainer>
-  );
+    // Map component
+    const MapComponent = React.useMemo(() => () => (
+      <MapContainer 
+        center={[location.lat, location.lng]} 
+        zoom={13} 
+        className="rounded-3"
+        style={{ height: '95%', minHeight: '400px', width: '100%' }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <MapEvents />
+        <Marker position={[location.lat, location.lng]}>
+          <Popup>{t('contractUpload.title')}</Popup>
+        </Marker>
+      </MapContainer>
+    ), [location, t]);
 
   return (
     <>
@@ -121,16 +142,19 @@ const serviceOptions = [
           <div className="col-md-6">
             <div className="shadow p-3 rounded-3 h-100">
 
-              <h2 className='orders-title'>رفع طلب باقة عقد</h2>
+              <h2 className='orders-title'>{t('contractUpload.title')}</h2>
                 <div className="row">
                 <div className="col-12">
                     <div className="mb-2">
-                    <label className="form-label mb-1">اين ستستخدم الشاحنة ؟</label>
+                    <label className="form-label mb-1">{t('contractUpload.whereTruck')}</label>
                     <div className="select-wrapper position-relative">
-    <select className="form-select form-input py-2 pe-3 blue-select">
-        <option value="قنا">قنا</option>
+    <select className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'} blue-select`} value={cityId} onChange={(e) => setCityId(e.target.value)}>
+        <option value="" disabled>{t('contractUpload.selectOption')}</option>
+        {listsData?.InCity && Object.entries(listsData.InCity).map(([id, name]) => (
+          <option key={id} value={id}>{name}</option>
+        ))}
     </select>
-    <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+    <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y`}>
         <ExpandMoreIcon />
     </div>
 </div>
@@ -138,13 +162,13 @@ const serviceOptions = [
                     </div>
                     <div className="d-flex align-items-center gap-1 border-bottom pb-2">
                         <img src="../assets/map-hotel.svg" alt="map" />
-                        <h6 className='choose-from-map m-0'>حدد من الخريطة</h6>
+                        <h6 className='choose-from-map m-0'>{t('contractUpload.mapSelect')}</h6>
                     </div>
                     <div className="col-12 mt-3">
-                        <label className="form-label mb-1">نوع الشاحنة</label>
+                        <label className="form-label mb-1">{t('contractUpload.truckType')}</label>
 
                         {/* ✅ Custom Select */}
-                        <div className="custom-select-wrapper">
+                        <div className="custom-select-wrapper" style={{ zIndex: open ? 1100 : 10 }}>
                             
                             <div
                             className="custom-select form-input"
@@ -152,11 +176,11 @@ const serviceOptions = [
                             >
                             {selectedTruck ? (
                                 <div className="d-flex align-items-center gap-2">
-                                <img src={selectedTruck.image} alt="" />
-                                <span>{selectedTruck.label}</span>
+                                {selectedTruck.image && <img src={selectedTruck.image} alt="" style={{ width: '24px' }} />}
+                                <span>{getLangField(selectedTruck, 'name')}</span>
                                 </div>
                             ) : (
-                                <span className="placeholder">اختر نوع الشاحنة</span>
+                                <span className="placeholder">{t('contractUpload.truckTypePlaceholder')}</span>
                             )}
 
                             <ExpandMoreIcon className={`arrow ${open ? "rotate" : ""}`} />
@@ -164,14 +188,14 @@ const serviceOptions = [
 
                             {open && (
                             <div className="custom-options">
-                                {truckOptions.map((option) => (
+                                {(listsData?.Truck || []).map((option) => (
                                 <div
-                                    key={option.value}
+                                    key={option.id}
                                     className="custom-option"
                                     onClick={() => handleSelect(option)}
                                 >
-                                    <img src={option.image} alt="" />
-                                    <span>{option.label}</span>
+                                    {option.image && <img src={option.image} alt="" style={{ width: '24px' }} />}
+                                    <span>{getLangField(option, 'name')}</span>
                                 </div>
                                 ))}
                             </div>
@@ -182,42 +206,49 @@ const serviceOptions = [
                     </div>  
                                     {/* Service Type Filter (Radio with Images) */}
 <div>
-<label className="form-label mb-1 mt-3">حجم الشاحنة</label>
+<label className="form-label mb-1 mt-3">{t('contractUpload.truckSize')}</label>
 
-  <div className="d-flex gap-md-1 gap-3 justify-content-center justify-content-md-between flex-wrap">
-    {serviceOptions.map((item) => (
+  <div className="horizontal-scroll-wrapper">
+    {(subTrucksData || []).map((item) => (
       <div
         key={item.id}
-        className={`filter-checkbox-box-2 ${
+        className={`truck-size-card ${
           selectedService === item.id ? "active" : ""
         }`}
         onClick={() => setSelectedService(item.id)}
       >
+        <div className="truck-img-wrapper">
+          <img
+            src={item.image}
+            alt={getLangField(item, 'name')}
+          />
+        </div>
+        
         <input
           type="radio"
           className="checkbox-style"
           checked={selectedService === item.id}
           readOnly
         />
-
-        <div className="d-flex flex-column align-items-center gap-1">
-          <img
-            src={item.image}
-            alt={item.label}
-          />
-        </div>
       </div>
     ))}
+    {truckId && (!subTrucksData || subTrucksData.length === 0) && (
+      <p className="text-muted w-100 text-center">{t('contractUpload.noSizes')}</p>
+    )}
   </div>
+
   <div className="row mt-3">
                     <div className="col-lg-8">
                     <div className="mb-3">
-                    <label className="form-label mb-1">نوع البضاعة</label>
+                    <label className="form-label mb-1">{t('contractUpload.goodType')}</label>
                     <div className="select-wrapper position-relative">
-    <select className="form-select form-input py-2 pe-3 blue-select">
-        <option value="مواد بناء">مواد بناء</option>
+    <select className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'} blue-select`} value={goodTypeId} onChange={(e) => setGoodTypeId(e.target.value)}>
+        <option value="" disabled>{t('contractUpload.goodTypePlaceholder')}</option>
+        {(listsData?.GoodType || []).map((type) => (
+          <option key={type.id} value={type.id}>{getLangField(type, 'name')}</option>
+        ))}
     </select>
-    <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+    <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y`}>
         <ExpandMoreIcon />
     </div>
 </div>
@@ -225,19 +256,22 @@ const serviceOptions = [
 
                     </div>
                     <div className="col-lg-4">
-                    <label className="form-label mb-1">عدد الرحلات شهريا</label>
-                    <div className="input-with-icon mb-3">
-                    <input
-                      type="text"
-                      className="form-control form-input py-2 blue-input text-center"
-                      placeholder="500"
-                    />
-                  </div>
+                    <label className="form-label mb-1">{t('contractUpload.tripsPerMonth')}</label>
+                    <div className="select-wrapper position-relative">
+                        <select className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'} blue-select`} value={numTrips} onChange={(e) => setNumTrips(e.target.value)}>
+                            {[...Array(10)].map((_, i) => (
+                              <option key={i+1} value={i+1}>{i+1 < 10 ? `0${i+1}` : i+1}</option>
+                            ))}
+                        </select>
+                        <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y`}>
+                            <ExpandMoreIcon />
+                        </div>
+                    </div>
                     </div>
                 </div>
 </div>
 <div className="mb-3">
-                    <label className="form-label mb-1">تاريخ البدأ</label>
+                    <label className="form-label mb-1">{t('contractUpload.startDate')}</label>
                     <div className="datetime-wrapper position-relative">
       
       {/* Hidden native inputs */}
@@ -245,29 +279,18 @@ const serviceOptions = [
         ref={dateRef}
         type="date"
         className="hidden-native-input"
+        value={date}
         onChange={(e) => setDate(e.target.value)}
       />
 
-      <input
-        ref={timeRef}
-        type="time"
-        className="hidden-native-input"
-        onChange={(e) => setTime(e.target.value)}
-      />
-
       {/* Visible fake input */}
-      <div className="form-input datetime-input d-flex align-items-center justify-content-between">
+      <div className="form-input datetime-input d-flex align-items-center justify-content-between" onClick={() => dateRef.current.showPicker()} style={{ cursor: 'pointer' }}>
 
         <div className="d-flex align-items-center gap-4">
                     {/* Right: Date */}
-        <span
-          className="datetime-part"
-          onClick={() => dateRef.current.showPicker()}
-        >
-          {date || "التاريخ"}
+        <span className="datetime-part">
+          {date || t('contractUpload.startDate')}
         </span>
-
-
         </div>
         {/* Left Icon */}
         <CalendarMonthIcon className="calendar-icon" />
@@ -276,30 +299,38 @@ const serviceOptions = [
                 </div>   
                 </div>
                 <div className="mb-3">
-                <label className="form-label mb-1">مدة العقد</label>
+                <label className="form-label mb-1">{t('contractUpload.contractDuration')}</label>
                     <div className="d-flex align-items-center gap-2">
-                        {monthOptions.map((month) => (
+                        {(listsData?.ContractDuration || []).map((duration) => (
                             <div 
-                                key={month.id}
+                                key={duration.id}
                                 className={`filter-checkbox-box-2 months-filter-item px-4 ${
-                                    selectedMonth === month.id ? "active" : ""
+                                    contractDurationId === duration.id ? "active" : ""
                                 }`}
-                                onClick={() => setSelectedMonth(month.id)}
+                                onClick={() => setContractDurationId(duration.id)}
+                                style={{ flex: 1, textAlign: 'center' }}
                             >
-                                {month.label}
+                                {getLangField(duration, 'name')}
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className="d-flex align-items-center justify-content-end gap-2">
-                                <button type='button' className="login-button text-decoration-none">ارسال الطلب</button>
-                            </div>
+                    <button 
+                      type='button' 
+                      className="login-button text-decoration-none" 
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? t('contractUpload.submitting') : t('contractUpload.submit')}
+                    </button>
+                </div>
 
             </div>
           </div>
           <div className="col-md-6">
             <div className="shadow p-3 rounded-3 h-100">
-            <h2 className='orders-title'>تحديد المواقع على الخريطة</h2>
+            <h2 className='orders-title'>{t('basicUpload.mapTitle')}</h2>
             <div className="mt-3 pb-3 h-100">
               <MapComponent />
             </div>

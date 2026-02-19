@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetHomeDataQuery } from '../../api/site/siteApi';
+import { useGetHomeDataQuery, useGetSubTrucksQuery } from '../../api/site/siteApi';
 
 const Trucks = () => {
   const { i18n } = useTranslation();
   const { data: homeData, isLoading } = useGetHomeDataQuery();
   const [activeFilter, setActiveFilter] = useState(null);
+  
+  const { data: currentChildren = [], isLoading: isSubLoading } = useGetSubTrucksQuery(activeFilter, { 
+    skip: !activeFilter 
+  });
 
   // Helper to get localized field from API
   const getLangField = (item, field) => {
@@ -39,27 +43,6 @@ const Trucks = () => {
 
   const currentParent = parentTrucks.find((t) => t.id === activeFilter);
 
-  // فلترة الشاحنات الفرعية: البحث عن الشاحنات التي تحتوي اسم الشاحنة الأساسية
-  const currentChildren = allTrucks.filter((t) => {
-    // استبعاد الشاحنات الأساسية
-    if (parentIds.includes(t.id)) return false;
-    if (!currentParent) return false;
-
-    // الحصول على أسماء الشاحنة الأساسية (عربي وإنجليزي)
-    const parentNameAr = (currentParent.name || '').toLowerCase().trim();
-    const parentNameEn = (currentParent.name_en || '').toLowerCase().trim();
-
-    // الحصول على أسماء الشاحنة الفرعية (عربي وإنجليزي)
-    const childNameAr = (t.name || '').toLowerCase();
-    const childNameEn = (t.name_en || '').toLowerCase();
-
-    // البحث إذا كان اسم الشاحنة الفرعية يحتوي على اسم الشاحنة الأساسية
-    return (
-      (parentNameAr && childNameAr.includes(parentNameAr)) ||
-      (parentNameEn && childNameEn.includes(parentNameEn))
-    );
-  });
-
   return (
     <section className="trucks py-4">
       <div className="container">
@@ -91,7 +74,6 @@ const Trucks = () => {
             </div>
           ))}
         </div>
-
         <div className="row mt-4">
           <div className="col-12">
             <div className="filter-item-container">
@@ -108,7 +90,13 @@ const Trucks = () => {
                 {/* القائمة الفرعية على اليسار (في RTL) واليمين (في LTR) */}
                 <div className="col-md-7">
                   <div className="d-flex flex-column gap-3 align-items-end" style={{}}>
-                    {currentChildren.length > 0 ? (
+                    {isSubLoading ? (
+                       <div className="col-12 text-center">
+                        <p className="text-muted italic">
+                          {i18n.language === 'en' ? 'Loading...' : 'جاري التحميل...'}
+                        </p>
+                      </div>
+                    ) : currentChildren.length > 0 ? (
                       currentChildren.map((child) => (
                         <div
                           key={child.id}

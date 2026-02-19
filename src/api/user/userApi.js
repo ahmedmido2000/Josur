@@ -40,12 +40,12 @@ export const userApi = baseApi.injectEndpoints({
     
     /**
      * Update User Profile
-     * PUT /user/profile
+     * POST /api/web/v1/site/profile
      */
     updateUserProfile: builder.mutation({
       query: (profileData) => ({
         url: API_ENDPOINTS.USER_PROFILE,
-        method: 'PUT',
+        method: 'POST',
         body: profileData,
       }),
       invalidatesTags: ['Profile', 'User'],

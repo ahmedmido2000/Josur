@@ -818,7 +818,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f5f2f2;
   border-radius: 12px;
   transition: transform 0.3s ease;
 }
@@ -1569,6 +1569,7 @@ select.form-select {
   color: #1A73E8;
   font-size: 16px;
   font-weight: 600;
+  z-index: 1050; /* Higher than bootstrap default components */
 }
 
 .custom-select {
@@ -1608,7 +1609,9 @@ select.form-select {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  z-index: 100;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .custom-option {
@@ -1626,6 +1629,62 @@ select.form-select {
 .custom-option img {
   width: 32px;
 }
+.horizontal-scroll-wrapper {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 10px 5px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.horizontal-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.truck-size-card {
+  flex: 0 0 auto;
+  min-width: 180px;
+  height: 110px;
+  background-color: #F4F4F5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1.5px solid transparent;
+}
+
+.truck-size-card.active {
+  background-color: #FFEDD5;
+  border-color: #F97316;
+}
+
+.truck-size-card .truck-img-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.truck-size-card .truck-img-wrapper img {
+  max-width: 100%;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+/* Make checkbox circular for truck size cards */
+.truck-size-card .checkbox-style {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.truck-size-card .checkbox-style:checked::after {
+  left: 5px;
+  top: 1px;
+}
+
 .blue-select, .blue-input{
   color: #1A73E8 !important;
   font-size: 16px !important;

@@ -46,6 +46,28 @@ export const setDocumentDirection = (language) => {
 };
 
 /**
+ * Get the localized value of a field based on the current language.
+ * Convention: name_ar, name_en, etc.
+ * @param {object} item - The object containing the fields
+ * @param {string} field - The base field name (e.g., 'name')
+ * @param {string} lang - The current language code (e.g., 'ar', 'en')
+ * @returns {string} - The localized field value, or the field value, or empty string
+ */
+export const getLangField = (item, field, lang) => {
+  if (!item) return '';
+  const langUpper = lang.charAt(0).toUpperCase() + lang.slice(1); // 'Ar' or 'En'
+  const localizedField = `${field}_${langUpper.toLowerCase()}`; // 'name_ar' or 'name_en'
+  
+  // Try precise field name_ar/name_en
+  if (item[localizedField]) return item[localizedField];
+  
+  // Fallback to base field if exists
+  if (item[field]) return item[field];
+  
+  return '';
+};
+
+/**
  * Get opposite direction
  * @param {string} direction - Current direction ('rtl' or 'ltr')
  * @returns {string} - Opposite direction
