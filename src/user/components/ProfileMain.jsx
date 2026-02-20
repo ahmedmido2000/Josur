@@ -111,167 +111,182 @@ const ProfileMain = () => {
   const displayUser = profileData || userFromRedux || {};
 
   return (
-    <section>
-      <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 pb-4">
-      <div className="d-flex gap-3 align-items-center">
-                    <div className="position-relative">
-                        <img src={formData.imagePreview || '/assets/man.png'} className='profile-main-img' alt="user" />
-                        {isEditing && (
-                            <div 
-                                className="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow-sm" 
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => fileInputRef.current.click()}
-                            >
-                                <i className="fas fa-camera text-primary"></i>
-                            </div>
-                        )}
-                        <input 
-                            type="file" 
-                            ref={fileInputRef} 
-                            style={{ display: 'none' }} 
-                            accept="image/*"
-                            onChange={handleImageChange}
-                        />
-                    </div>
-                    <div>
-                        <h6 className="orders-title m-0">{`${displayUser.name || ''} ${displayUser.last_name || ''}`}</h6>
-                        <p className="why-card-desc email-text m-0">{displayUser.email}</p>
-                    </div>
+    <section className="profile-edit-section">
+      <div className="profile-header d-flex justify-content-between align-items-center flex-wrap gap-4 pb-4 border-bottom mb-4">
+        <div className="d-flex gap-3 align-items-center">
+          <div className="position-relative">
+            <div className="profile-img-container shadow-sm border rounded-circle overflow-hidden bg-light" style={{ width: '90px', height: '90px' }}>
+                <img 
+                    src={formData.imagePreview || '/assets/man.png'} 
+                    className='w-100 h-100 object-fit-cover' 
+                    alt="user" 
+                    onError={(e) => { e.target.src = '/assets/man.png' }}
+                />
+            </div>
+            {isEditing && (
+                <div 
+                    className="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow" 
+                    style={{ cursor: 'pointer', width: '30px', height: '30px' }}
+                    onClick={() => fileInputRef.current.click()}
+                >
+                    <i className="fas fa-camera" style={{ fontSize: '13px' }}></i>
                 </div>
-        <div className="d-flex align-items-center gap-2">
+            )}
+            <input 
+                type="file" 
+                ref={fileInputRef} 
+                style={{ display: 'none' }} 
+                accept="image/*"
+                onChange={handleImageChange}
+            />
+          </div>
+          <div>
+              <h5 className="orders-title m-0 fw-bold">{`${displayUser.name || ''} ${displayUser.last_name || ''}`}</h5>
+              <p className="text-muted m-0 small">{displayUser.email}</p>
+          </div>
+        </div>
+        
+        <div className="profile-actions">
           {!isEditing ? (
             <button 
               type='button' 
-              className="login-button text-decoration-none"
+              className="login-button border-0 px-4 py-2 rounded-pill shadow-sm"
               onClick={() => setIsEditing(true)}
             >
+              <i className="fas fa-edit me-2"></i>
               {t('profile.edit')}
             </button>
           ) : (
-            <>
-              <button 
-                type='button' 
-                className="btn btn-outline-secondary px-4 py-2"
-                onClick={() => setIsEditing(false)}
-                disabled={isUpdating}
-              >
-                {t('profile.cancel')}
-              </button>
-              <button 
-                type='button' 
-                className="login-button text-decoration-none"
-                onClick={handleSave}
-                disabled={isUpdating}
-              >
-                {isUpdating ? t('profile.submitting') : t('profile.save')}
-              </button>
-            </>
+            <div className="d-flex gap-2">
+                <button 
+                    type='button' 
+                    className="btn btn-outline-secondary px-4 py-2 rounded-pill small"
+                    onClick={() => setIsEditing(false)}
+                    disabled={isUpdating}
+                >
+                    {t('common:buttons.cancel')}
+                </button>
+                <button 
+                    type='button' 
+                    className="login-button border-0 px-4 py-2 rounded-pill shadow-sm small"
+                    onClick={handleSave}
+                    disabled={isUpdating}
+                >
+                    {isUpdating ? t('profile.submitting') : t('profile.save')}
+                </button>
+            </div>
           )}
         </div>
       </div>
-        <div className="row mt-4">
-            <div className="col-md-6">
-            <div className="mb-3">
-                    <label className="form-label mb-1">{t('profile.firstName')}</label>
-                <input
-                    type="text"
-                    name="name"
-                    className="form-control form-input py-2"
-                    placeholder={t('profile.firstName')}
-                    value={formData.name}
-                    onChange={handleChange}
-                    readOnly={!isEditing}
-                />
-                </div>
-            </div>
-            <div className="col-md-6">
-            <div className="mb-3">
-                    <label className="form-label mb-1">{t('profile.lastName')}</label>
-                <input
-                    type="text"
-                    name="last_name"
-                    className="form-control form-input py-2"
-                    placeholder={t('profile.lastName')}
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    readOnly={!isEditing}
-                />
-                </div>
-            </div>
-            <div className="col-md-6">
-            <div className="mb-3">
-                    <label className="form-label mb-1">{t('profile.email')}</label>
-                <input
-                    type="email"
-                    className="form-control form-input py-2"
-                    placeholder={t('profile.email')}
-                    value={displayUser.email || ''}
-                    readOnly
-                    disabled
-                />
-                </div>
-            </div>
-            <div className="col-md-6">
-            <div className="mb-3">
-                    <label className="form-label mb-1">{t('profile.country')}</label>
-                    <div className="select-wrapper position-relative">
-    <select 
-      name="country_id"
-      className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'}`}
-      value={formData.country_id}
-      onChange={handleChange}
-      disabled={!isEditing}
-    >
-        <option value="">{t('profile.selectCountry')}</option>
-        {listsData?.Country && Object.values(listsData.Country).map(country => (
-            <option key={country.id} value={country.id}>{getLangField(country, 'name')}</option>
-        ))}
-    </select>
-    <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y`}>
-        <ExpandMoreIcon />
-    </div>
-</div>
-                </div>
-            </div>
-            <div className="col-md-6">
-            <div className="mb-3">
-                    <label className="form-label mb-1">{t('profile.phone')}</label>
-                <input
-                    type="text"
-                    name="mobile"
-                    className="form-control form-input py-2"
-                    placeholder={t('profile.phone')}
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    readOnly={!isEditing}
-                />
-                </div>
-            </div>
-            <div className="col-md-6">
-            <div className="mb-3">
-                    <label className="form-label mb-1">{t('profile.city')}</label>
-                    <div className="select-wrapper position-relative">
-    <select 
-      name="city_id"
-      className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'}`}
-      value={formData.city_id}
-      onChange={handleChange}
-      disabled={!isEditing}
-    >
-        <option value="">{t('profile.selectCity')}</option>
-        {listsData?.city && Object.values(listsData.city)
-            .filter(city => !formData.country_id || city.country_id.toString() === formData.country_id.toString())
-            .map(city => (
-            <option key={city.id} value={city.id}>{getLangField(city, 'name')}</option>
-        ))}
-    </select>
-    <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y`}>
-        <ExpandMoreIcon />
-    </div>
-</div>
-                </div>
-            </div>
-        </div>
+
+      <div className="row g-3 mt-2">
+          <div className="col-md-6 col-12">
+              <div className="mb-3">
+                  <label className="form-label mb-1 fw-semibold small">{t('profile.firstName')}</label>
+                  <input
+                      type="text"
+                      name="name"
+                      className="form-control form-input py-2"
+                      placeholder={t('profile.firstName')}
+                      value={formData.name}
+                      onChange={handleChange}
+                      readOnly={!isEditing}
+                  />
+              </div>
+          </div>
+          <div className="col-md-6 col-12">
+              <div className="mb-3">
+                  <label className="form-label mb-1 fw-semibold small">{t('profile.lastName')}</label>
+                  <input
+                      type="text"
+                      name="last_name"
+                      className="form-control form-input py-2"
+                      placeholder={t('profile.lastName')}
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      readOnly={!isEditing}
+                  />
+              </div>
+          </div>
+          <div className="col-md-6 col-12">
+              <div className="mb-3">
+                  <label className="form-label mb-1 fw-semibold small">{t('profile.email')}</label>
+                  <input
+                      type="email"
+                      className="form-control form-input py-2 bg-light"
+                      placeholder={t('profile.email')}
+                      value={displayUser.email || ''}
+                      readOnly
+                      disabled
+                  />
+              </div>
+          </div>
+          <div className="col-md-6 col-12">
+              <div className="mb-3">
+                  <label className="form-label mb-1 fw-semibold small">{t('profile.phone')}</label>
+                  <input
+                      type="text"
+                      name="mobile"
+                      className="form-control form-input py-2"
+                      placeholder={t('profile.phone')}
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      readOnly={!isEditing}
+                      dir="ltr"
+                  />
+              </div>
+          </div>
+          <div className="col-md-6 col-12">
+              <div className="mb-3">
+                  <label className="form-label mb-1 fw-semibold small">{t('profile.country')}</label>
+                  <div className="select-wrapper position-relative">
+                      <select 
+                          name="country_id"
+                          className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'}`}
+                          value={formData.country_id}
+                          onChange={handleChange}
+                          disabled={!isEditing}
+                      >
+                          <option value="">{t('profile.selectCountry')}</option>
+                          {listsData?.Country && Object.values(listsData.Country).map(country => (
+                              <option key={country.id} value={country.id}>{getLangField(country, 'name')}</option>
+                          ))}
+                      </select>
+                      {!isEditing ? null : (
+                          <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y pointer-none`}>
+                              <ExpandMoreIcon />
+                          </div>
+                      )}
+                  </div>
+              </div>
+          </div>
+          <div className="col-md-6 col-12">
+              <div className="mb-3">
+                  <label className="form-label mb-1 fw-semibold small">{t('profile.city')}</label>
+                  <div className="select-wrapper position-relative">
+                      <select 
+                          name="city_id"
+                          className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'}`}
+                          value={formData.city_id}
+                          onChange={handleChange}
+                          disabled={!isEditing}
+                      >
+                          <option value="">{t('profile.selectCity')}</option>
+                          {listsData?.city && Object.values(listsData.city)
+                              .filter(city => !formData.country_id || city.country_id.toString() === formData.country_id.toString())
+                              .map(city => (
+                              <option key={city.id} value={city.id}>{getLangField(city, 'name')}</option>
+                          ))}
+                      </select>
+                      {!isEditing ? null : (
+                          <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y pointer-none`}>
+                              <ExpandMoreIcon />
+                          </div>
+                      )}
+                  </div>
+              </div>
+          </div>
+      </div>
     </section>
   )
 }

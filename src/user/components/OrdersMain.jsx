@@ -145,9 +145,9 @@ const [rating, setRating] = useState(0);
       </div>
       
       {/* Sub Filters */}
-      <div className="orders-sub-filter row align-items-center mt-2 border-bottom">
+      <div className="orders-sub-filter row align-items-center mt-2 border-bottom g-2">
         {subFilters.map((filter) => (
-          <div key={filter.id} className="col-lg-3 col-md-6">
+          <div key={filter.id} className="col-6 col-lg-3">
             <div 
               className={`sub-filter-item d-flex justify-content-center gap-1 align-items-center ${activeSubFilter === filter.id ? 'active' : ''}`}
               onClick={() => handleSubFilterClick(filter.id)}

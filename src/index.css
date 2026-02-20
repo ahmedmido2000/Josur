@@ -74,11 +74,66 @@
 }
 
 /* RTL Navbar Adjustments */
+@media (min-width: 992px) {
+  [dir="rtl"] .navbar-nav {
+    flex-direction: row-reverse;
+  }
+}
+
 [dir="rtl"] .navbar-nav {
-  flex-direction: row-reverse;
+  padding-right: 0;
+}
+
+[dir="ltr"] .navbar-nav {
+  padding-left: 0;
 }
 
 /* ===== End RTL/LTR Support ===== */
+
+/* ===== Responsive Sidebar ===== */
+@media (max-width: 767px) {
+  .user-sidebar {
+    display: flex !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 20px !important;
+    border-bottom: 1px solid #f0f0f0;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .user-sidebar-item {
+    margin-bottom: 0 !important;
+    padding: 8px 15px !important;
+    background: #f8f9fa;
+    border-radius: 20px;
+    flex: 0 0 auto;
+  }
+  
+  .user-sidebar-item.active {
+    background: #e7f1ff;
+  }
+}
+
+/* Fix sticky navbar overlap */
+body {
+  padding-top: 0;
+}
+
+.sticky-top {
+  z-index: 1030;
+  background-color: white !important;
+}
+
+/* General button responsiveness */
+@media (max-width: 576px) {
+  .login-button, .join-button {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+}
+/* ===== End Responsive Sidebar ===== */
 
 body {
   /* Set IBM Plex Sans Arabic as the default font */
@@ -86,20 +141,68 @@ body {
 }
 /* Custom styles for Navbar links */
 .navbar{
-  background-color: #FFFFFF66 !important;
+  /* background-color: #FFFFFF66 !important; */
 }
 .nav-link-custom {
-  font-size: 16px !important;
-  color: #374151 !important;
-  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: #4B5563 !important;
+  font-weight: 500 !important;
   cursor: pointer;
-  padding: 0 15px;
-  transition: color 0.2s ease-in-out;
+  padding: 8px 12px !important;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  position: relative;
 }
 
-.nav-link-custom:hover,
+@media (min-width: 1200px) {
+  .nav-link-custom {
+    font-size: 15px !important;
+    padding: 8px 18px !important;
+  }
+}
+
+.nav-link-custom:hover {
+  background-color: #f3f8ff;
+  color: #1A73E8 !important;
+}
+
 .nav-link-custom.active {
-  color: #1A73E8 !important ;
+  color: #1A73E8 !important;
+  font-weight: 700 !important;
+}
+
+.nav-link-custom.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 18px;
+  right: 18px;
+  height: 3px;
+  background-color: #1A73E8;
+  border-radius: 2px;
+}
+
+@media (max-width: 991px) {
+  .nav-link-custom {
+    padding: 12px 15px !important;
+    border-radius: 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .nav-link-custom.active::after {
+    display: none;
+  }
+  .nav-link-custom.active {
+    background-color: #f3f8ff;
+    border-left: 4px solid #1A73E8;
+  }
+  [dir="rtl"] .nav-link-custom.active {
+    border-left: none;
+    border-right: 4px solid #1A73E8;
+  }
+  .navbar-nav {
+    flex-direction: column !important;
+    padding: 0 !important;
+  }
 }
 
 /* Language button */

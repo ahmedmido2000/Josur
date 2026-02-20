@@ -106,25 +106,25 @@ const TripOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRati
                     <FontAwesomeIcon icon={faCircle} className='dot-icon' />
                     <h6 className='user-desc m-0'>{order.time || '--'}</h6>
                   </div>
-                  <div className="d-flex justify-content-between text-center align-items-center w-100 mb-1">
-                    <div>
+                  <div className="d-flex justify-content-between text-center align-items-center w-100 mb-1 flex-wrap gap-2">
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.truckType')}</h6>
                       <p className='footer-main-sublabel m-0'>{getName(order.truck_id)}</p>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.truckSize')}</h6>
                       <p className='footer-main-sublabel m-0'>{getName(order.sub_truck_id)}</p>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:tripUpload.tripsPerMonth')}</h6>
                       <p className='footer-main-sublabel m-0'>{order.good_price || 0}</p>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.goodType')}</h6>
                       <p className='footer-main-sublabel m-0'>{getName(order.good_type_id)}</p>
                     </div>
                   </div>
-                  <div className="d-flex align-items-center gap-2">
+                  <div className="d-flex align-items-center gap-2 flex-wrap">
                     <div className="offers-dropdown d-flex align-items-center justify-content-center gap-2" onClick={toggleOffers} style={{ cursor: 'pointer' }}>
                       <h6 className='offers-dropdown-text m-0'>{t('common:buttons.offers')}</h6>
                       <FontAwesomeIcon icon={offersExpanded ? faChevronUp : faChevronDown} />

@@ -34,7 +34,12 @@
             "updateSuccess": "Profile updated successfully",
             "updateError": "Error updating profile"        }
     },
-    "orders": {
+    "sidebar": {
+    "orders": "My Orders",
+    "balance": "Balance",
+    "profile": "Profile"
+  },
+  "orders": {
         "title": "Driver Orders",
         "available": "Available Orders",
         "active": "Active Orders",

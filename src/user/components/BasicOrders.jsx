@@ -107,26 +107,26 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
                     <h6 className='user-desc m-0'>{order.time || '--'}</h6>
                   </div>
                   {/* 
-                  <div className="d-flex justify-content-between text-center align-items-center w-100 mb-1">
-                    <div>
+                  <div className="d-flex justify-content-between text-center align-items-center w-100 mb-1 flex-wrap gap-2">
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.truckType')}</h6>
                       <p className='footer-main-sublabel m-0'>{getName(order.truck_id)}</p>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.truckSize')}</h6>
                       <p className='footer-main-sublabel m-0'>{getName(order.sub_truck_id)}</p>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.goodType')}</h6>
                       <p className='footer-main-sublabel m-0'>{getName(order.good_type_id)}</p>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <h6 className='user-desc m-0 mt-1'>{t('user:basicUpload.goodPrice')}</h6>
                       <p className='footer-main-sublabel m-0'>{order.good_price}</p>
                     </div>
                   </div>
                   */}
-                  <div className="d-flex align-items-center gap-2">
+                  <div className="d-flex align-items-center gap-2 flex-wrap">
                     <div className="offers-dropdown d-flex align-items-center justify-content-center gap-2" onClick={toggleOffers} style={{ cursor: 'pointer' }}>
                       <h6 className='offers-dropdown-text m-0'>{t('common:buttons.offers')}</h6>
                       <FontAwesomeIcon icon={offersExpanded ? faChevronUp : faChevronDown} />
@@ -161,21 +161,21 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
                     </div>
                   </div>
                   
-                  <div className="d-flex justify-content-between align-items-center w-100">
+                  <div className="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
                     {order.driver_id && (
                       <div className="d-flex gap-2 align-items-start">
-                        <img src={order.driver_id.avatar || "../assets/man.png"} className='user-img' alt="user" />
+                        <img src={order.driver_id.avatar || "/assets/man.png"} className='user-img' alt="user" />
                         <div>
                           <div className="d-flex gap-1 align-items-center">
                             <h6 className="user-name m-0">{order.driver_id.name}</h6>
-                            <div className="new-order-badge p-1 rounded-2 text-nowrap">{order.driver_id.rate || '0'} <img src="../assets/star.svg" alt="" /></div>
+                            <div className="new-order-badge p-1 rounded-2 text-nowrap">{order.driver_id.rate || '0'} <img src="/assets/star.svg" alt="" /></div>
                           </div>
                           <p className="user-desc m-0">{getName(order.truck_id)}</p>
                         </div>
                       </div>
                     )}
                     {truckImg && (
-                      <div className="truck-image-small">
+                      <div className="truck-image-small ms-auto">
                         <img src={truckImg} alt="truck" style={{ width: '60px', height: 'auto', borderRadius: '4px' }} />
                       </div>
                     )}
