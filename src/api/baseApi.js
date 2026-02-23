@@ -82,7 +82,7 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithReauth,
   
   // Tag types for cache invalidation
-  tagTypes: ['User', 'Order', 'Driver', 'Admin', 'Balance', 'Notification', 'Profile'],
+  tagTypes: ['User', 'Order', 'Driver', 'Admin', 'Balance', 'Notification', 'Profile', 'Vehicle'],
   
   // Endpoints will be injected by individual API slices
   endpoints: () => ({}),

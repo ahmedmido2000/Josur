@@ -134,6 +134,46 @@ export const driverApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Order'],
     }),
+
+    /**
+     * View Vehicle
+     * GET /api/web/v1/site/veiw-vehicle
+     */
+    getVehicle: builder.query({
+      query: (token) => ({
+        url: API_ENDPOINTS.VIEW_VEHICLE,
+        params: { 'access-token': token },
+      }),
+      providesTags: ['Vehicle'],
+    }),
+
+    /**
+     * Add Vehicle
+     * POST /api/web/v1/site/add-vehicle
+     */
+    addVehicle: builder.mutation({
+      query: ({ token, body }) => ({
+        url: API_ENDPOINTS.ADD_VEHICLE,
+        method: 'POST',
+        params: { 'access-token': token },
+        body,
+      }),
+      invalidatesTags: ['Vehicle'],
+    }),
+
+    /**
+     * Update Vehicle
+     * POST /api/web/v1/site/update-vehicle
+     */
+    updateVehicle: builder.mutation({
+      query: ({ token, body }) => ({
+        url: API_ENDPOINTS.UPDATE_VEHICLE,
+        method: 'POST',
+        params: { 'access-token': token },
+        body,
+      }),
+      invalidatesTags: ['Vehicle'],
+    }),
   }),
 });
 
@@ -150,4 +190,7 @@ export const {
   useAcceptOrderMutation,
   useCreateOfferMutation,
   useRateCustomerMutation,
+  useGetVehicleQuery,
+  useAddVehicleMutation,
+  useUpdateVehicleMutation,
 } = driverApi;

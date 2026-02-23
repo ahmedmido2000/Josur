@@ -83,6 +83,7 @@ export const API_ENDPOINTS = {
   REGISTER: '/api/web/v1/site/signup',
   ACTIVATE: '/api/web/v1/site/activate',
   LISTS: '/api/web/v1/site/lists',
+  SIGNUP_DRIVER: '/api/web/v1/site/signup-driver',
   PASSWORD_RESET: '/api/web/v1/site/password-reset',
   LOGOUT: '/auth/logout',
   REFRESH_TOKEN: '/auth/refresh',
@@ -134,6 +135,10 @@ export const API_ENDPOINTS = {
   ADMIN_TRUCKS: '/admin/trucks',
   ADMIN_DRIVERS: '/admin/drivers',
   ADMIN_USERS: '/admin/users',
+  ADMIN_COMPANY_DRIVERS: '/api/web/v1/site/company-driver',
+  ADD_VEHICLE: '/api/web/v1/site/add-vehicle',
+  UPDATE_VEHICLE: '/api/web/v1/site/update-vehicle',
+  VIEW_VEHICLE: '/api/web/v1/site/veiw-vehicle',
 
   // Site
   SITE_HOME: '/api/web/v1/site/home-web',

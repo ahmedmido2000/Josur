@@ -60,16 +60,14 @@ const ForgotPasswordMain = () => {
                         <img src="assets/logo.png" alt="logo" />
                     </Link>
                     <h3 className="login-title mt-2 m-0">
-                        {i18n.language === 'en' ? 'Forgot Password?' : 'نسيت كلمة المرور؟'}
+                        {t('auth:forgotPassword.title')}
                     </h3>
                     <p className="login-desc m-0 text-center">
-                        {i18n.language === 'en' 
-                          ? 'Enter your email to receive a password reset link' 
-                          : 'أدخل بريدك الإلكتروني لتلقي رابط إعادة تعيين كلمة المرور'}
+                        {t('auth:forgotPassword.description')}
                     </p>
 
                     <div className="divider mt-3 mb-2">
-                        <span>{t('common:buttons.or', 'أو')}</span>
+                        <span>{t('common:buttons.or')}</span>
                     </div>
 
                     {error && <div className="alert alert-danger py-2 w-100 text-center" style={{ fontSize: '14px' }}>{error}</div>}
@@ -77,11 +75,11 @@ const ForgotPasswordMain = () => {
 
                     <div className="login-form w-100">
                         <div className="mb-3">
-                            <label className="form-label">{t('auth:login.email', 'البريد الإلكتروني')}</label>
+                            <label className="form-label">{t('auth:login.email')}</label>
                             <input
                                 type="email"
                                 className="form-control form-input py-2"
-                                placeholder={t('auth:login.email', 'البريد الإلكتروني')}
+                                placeholder={t('auth:login.email')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -95,7 +93,7 @@ const ForgotPasswordMain = () => {
                         >
                             {isResetLoading 
                               ? <span className="spinner-border spinner-border-sm"></span> 
-                              : (i18n.language === 'en' ? 'Send Reset Link' : 'إرسال رابط التعيين')}
+                              : t('auth:forgotPassword.sendButton')}
                         </button>
 
                         <div className="text-center mt-3">

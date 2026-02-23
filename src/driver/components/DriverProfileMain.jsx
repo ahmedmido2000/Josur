@@ -7,12 +7,12 @@ import { useGetListsQuery } from '../../api/site/siteApi';
 import { useGetDriverProfileQuery, useUpdateDriverProfileMutation } from '../../api/driver/driverApi';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import DriverTruckInfo from './DriverTruckInfo';
 
 const DriverProfileMain = () => {
   const { t, i18n } = useTranslation('driver');
   const isRtl = i18n.language === 'ar';
   const fileInputRef = useRef(null);
-  const truckPhotoRef = useRef(null);
   const dispatch = useDispatch();
   const userFromRedux = useSelector(selectCurrentUser);
 
@@ -28,21 +28,12 @@ const DriverProfileMain = () => {
     country_id: '',
     city_id: '',
     image: null,
-    imagePreview: null,
-    // Truck info
-    truck_type: '',
-    truck_plate: '',
-    production_year: '',
-    capacity: '',
-    status: '',
-    truck_image: null,
-    truckImagePreview: null
+    imagePreview: null
   });
 
   useEffect(() => {
     const user = userFromRedux || profileData?.data;
     if (user) {
-      const truck = user.truck || {};
       setFormData({
         name: user.name || '',
         last_name: user.last_name || '',
@@ -50,14 +41,7 @@ const DriverProfileMain = () => {
         country_id: (user.country_id && user.country_id !== 0 && user.country_id !== '0') ? user.country_id : '',
         city_id: (user.city_id && user.city_id !== 0 && user.city_id !== '0') ? user.city_id : '',
         image: null,
-        imagePreview: user.avatar || user.image || '../assets/man.png',
-        truck_type: truck.truck_type_id || '',
-        truck_plate: truck.plate_number || '',
-        production_year: truck.year || '',
-        capacity: truck.capacity || '',
-        status: truck.status || '',
-        truck_image: null,
-        truckImagePreview: truck.image || '../assets/truck-details-img.png'
+        imagePreview: user.avatar || user.image || '../assets/man.png'
       });
     }
   }, [userFromRedux, profileData]);
@@ -67,22 +51,14 @@ const DriverProfileMain = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e, type) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (type === 'user') {
-        setFormData(prev => ({
-          ...prev,
-          image: file,
-          imagePreview: URL.createObjectURL(file)
-        }));
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          truck_image: file,
-          truckImagePreview: URL.createObjectURL(file)
-        }));
-      }
+      setFormData(prev => ({
+        ...prev,
+        image: file,
+        imagePreview: URL.createObjectURL(file)
+      }));
     }
   };
 
@@ -93,18 +69,9 @@ const DriverProfileMain = () => {
     updateData.append('mobile', formData.mobile);
     updateData.append('country_id', formData.country_id);
     updateData.append('city_id', formData.city_id);
-    
-    updateData.append('truck_type_id', formData.truck_type);
-    updateData.append('plate_number', formData.truck_plate);
-    updateData.append('year', formData.production_year);
-    updateData.append('capacity', formData.capacity);
-    updateData.append('truck_status', formData.status);
 
     if (formData.image) {
       updateData.append('file', formData.image);
-    }
-    if (formData.truck_image) {
-      updateData.append('truck_file', formData.truck_image);
     }
 
     try {
@@ -152,7 +119,7 @@ const DriverProfileMain = () => {
                             ref={fileInputRef} 
                             style={{ display: 'none' }} 
                             accept="image/*"
-                            onChange={(e) => handleImageChange(e, 'user')}
+                            onChange={handleImageChange}
                         />
                     </div>
                     <div>
@@ -295,103 +262,11 @@ const DriverProfileMain = () => {
                 </div>
             </div>
         </div>
-        <div className="row mt-4">
-        <h3 className='orders-title mb-3'>{t('driver.profile.truckInfo')}</h3>
-
-                                    <div className="col-md-6">
-                                        <div className="mb-3">
-                                            <label className="form-label mb-1">{t('driver.profile.truckType')}</label>
-                                            <div className="select-wrapper position-relative">
-    <select 
-      name="truck_type"
-      className={`form-select form-input py-2 ${isRtl ? 'ps-3' : 'pe-3'}`}
-      value={formData.truck_type}
-      onChange={handleChange}
-      disabled={!isEditing}
-    >
-        <option value="">{t('driver.profile.truckType')}</option>
-        {listsData?.TruckType && Object.values(listsData.TruckType).map(type => (
-            <option key={type.id} value={type.id}>{getLangField(type, 'name')}</option>
-        ))}
-    </select>
-    <div className={`select-icon position-absolute ${isRtl ? 'start-0 ps-2' : 'end-0 pe-2'} top-50 translate-middle-y`}>
-        <ExpandMoreIcon />
-    </div>
-</div>
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label mb-1">{t('driver.profile.truckPlate')}</label>
-                                            <input
-                    type="text"
-                    name="truck_plate"
-                    className="form-control form-input py-2"
-                    placeholder={t('driver.profile.truckPlate')}
-                    value={formData.truck_plate}
-                    onChange={handleChange}
-                    readOnly={!isEditing}
-                />
-                                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label mb-1">{t('driver.profile.productionYear')}</label>
-                                            <input
-                    type="text"
-                    name="production_year"
-                    className="form-control form-input py-2"
-                    placeholder={t('driver.profile.productionYear')}
-                    value={formData.production_year}
-                    onChange={handleChange}
-                    readOnly={!isEditing}
-                />
-                                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label mb-1">{t('driver.profile.loadCapacity')}</label>
-                                            <input
-                                                type="text"
-                                                name="capacity"
-                                                className="form-control form-input py-2"
-                                                placeholder={t('driver.profile.loadCapacity')}
-                                                value={formData.capacity}
-                                                onChange={handleChange}
-                                                readOnly={!isEditing}
-                                            />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label mb-1">{t('driver.profile.truckStatus')}</label>
-                                            <input
-                                                type="text"
-                                                name="status"
-                                                className="form-control form-input py-2"
-                                                placeholder={t('driver.profile.truckStatus')}
-                                                value={formData.status}
-                                                onChange={handleChange}
-                                                readOnly={!isEditing}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <img src={formData.truckImagePreview || '../assets/truck-details-img.png'} className='img-fluid truck-driver-img w-100' alt="truck" />
-                                        {isEditing && (
-                                            <>
-                                                <button 
-                                                    type='button' 
-                                                    className="login-button text-decoration-none w-100 mt-3 d-flex align-items-center gap-1 justify-content-center"
-                                                    onClick={() => truckPhotoRef.current.click()}
-                                                >
-                                                    <img src="../assets/camera.svg" alt="" /> {t('driver.profile.changeTruckPhoto')}
-                                                </button>
-                                                <input 
-                                                    type="file" 
-                                                    ref={truckPhotoRef} 
-                                                    style={{ display: 'none' }} 
-                                                    accept="image/*"
-                                                    onChange={(e) => handleImageChange(e, 'truck')}
-                                                />
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
+        
+        <DriverTruckInfo user={displayUser} />
     </section>
   )
 }
+
 
 export default DriverProfileMain

@@ -32,7 +32,8 @@
         "completed": "Completed",
         "details": "Details",
         "rate": "Rate",
-        "currency": "$"
+        "currency": "$",
+        "or": "Or"
     },
     "provider": "Service Provider",
     "messages": {

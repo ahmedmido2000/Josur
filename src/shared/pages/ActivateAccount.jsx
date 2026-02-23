@@ -21,20 +21,20 @@ const ActivateAccount = () => {
     setSuccess('');
 
     if (!activationCode) {
-      setError(i18n.language === 'en' ? 'Please enter the activation code' : 'يرجى إدخال رمز التفعيل');
+      setError(t('auth:activateAccount.required'));
       return;
     }
 
     try {
       const result = await activate({ email, activation_code: activationCode }).unwrap();
       if (result.status === 1) {
-        setSuccess(result.message || (i18n.language === 'en' ? 'Account activated successfully!' : 'تم تفعيل الحساب بنجاح!'));
+        setSuccess(result.message || t('auth:activateAccount.success'));
         setTimeout(() => navigate('/login'), 2000);
       } else {
-        setError(result.message || (i18n.language === 'en' ? 'Activation failed' : 'فشل التفعيل'));
+        setError(result.message || t('auth:activateAccount.error'));
       }
     } catch (err) {
-      setError(err.data?.message || (i18n.language === 'en' ? 'An error occurred' : 'حدث خطأ ما'));
+      setError(err.data?.message || t('auth:activateAccount.error'));
     }
   };
 
@@ -49,12 +49,10 @@ const ActivateAccount = () => {
               <img src="assets/logo.png" alt="logo" />
             </Link>
             <h3 className="login-title mt-2 m-0">
-              {i18n.language === 'en' ? 'Activate Account' : 'تفعيل الحساب'}
+              {t('auth:activateAccount.title')}
             </h3>
             <p className="login-desc text-center px-3">
-              {i18n.language === 'en' 
-                ? `Please enter the code sent to ${email}` 
-                : `يرجى إدخال الكود المرسل إلى ${email}`}
+              {t('auth:activateAccount.description', { email })}
             </p>
 
             {error && <div className="alert alert-danger w-100 text-center">{error}</div>}
@@ -62,7 +60,7 @@ const ActivateAccount = () => {
 
             <form onSubmit={handleActivate} className="login-form w-100 px-4">
               <div className="mb-3">
-                <label className="form-label">{i18n.language === 'en' ? 'Email' : 'البريد الإلكتروني'}</label>
+                <label className="form-label">{t('auth:login.email')}</label>
                 <input
                   type="email"
                   className="form-control form-input py-2"
@@ -73,7 +71,7 @@ const ActivateAccount = () => {
               </div>
 
               <div className="mb-4">
-                <label className="form-label">{i18n.language === 'en' ? 'Activation Code' : 'رمز التفعيل'}</label>
+                <label className="form-label">{t('auth:activateAccount.code')}</label>
                 <input
                   type="text"
                   className="form-control form-input py-2"
@@ -88,12 +86,12 @@ const ActivateAccount = () => {
                 className="login-button w-100 py-2 rounded-3"
                 disabled={isLoading}
               >
-                {isLoading ? <span className="spinner-border spinner-border-sm"></span> : (i18n.language === 'en' ? 'Activate' : 'تفعيل')}
+                {isLoading ? <span className="spinner-border spinner-border-sm"></span> : t('auth:activateAccount.button')}
               </button>
 
               <div className="text-center mt-3">
                 <Link to="/login" className="register-link text-decoration-none small">
-                  {i18n.language === 'en' ? 'Back to Login' : 'العودة لتسجيل الدخول'}
+                  {t('auth:register.signIn')}
                 </Link>
               </div>
             </form>

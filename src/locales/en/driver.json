@@ -32,7 +32,12 @@
             "cancel": "Cancel",
             "submitting": "Saving...",
             "updateSuccess": "Profile updated successfully",
-            "updateError": "Error updating profile"        }
+            "updateError": "Error updating profile",
+            "noTruck": "No Truck Registered",
+            "noTruckDesc": "You haven't added a truck to your profile yet. Add your truck details to start receiving orders.",
+            "fullName": "Full Name",
+            "mobile": "Mobile Number"
+        }
     },
     "sidebar": {
     "orders": "My Orders",

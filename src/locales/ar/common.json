@@ -32,7 +32,8 @@
         "completed": "تم الشحن",
         "details": "التفاصيل",
         "rate": "تقييم",
-        "currency": "$"
+        "currency": "$",
+        "or": "أو"
     },
     "provider": "مقدم الخدمة",
     "messages": {

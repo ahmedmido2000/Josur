@@ -42,12 +42,12 @@ const RegisterMain = () => {
     setError('');
 
     if (formData.password !== formData.password_repeat) {
-      setError(i18n.language === 'en' ? 'Passwords do not match' : 'كلمات المرور غير متطابقة');
+      setError(t('auth:register.errors.match'));
       return;
     }
 
     if (!formData.item1) {
-      setError(i18n.language === 'en' ? 'You must agree to the terms' : 'يجب الموافقة على الشروط والأحكام');
+      setError(t('auth:register.errors.terms'));
       return;
     }
 
@@ -60,12 +60,12 @@ const RegisterMain = () => {
         navigate('/activate-account', { state: { email: formData.email } });
       } else {
         const backendMsg = result.data?.[0]?.message || result.message;
-        setError(backendMsg || (i18n.language === 'en' ? 'Registration failed' : 'فشل التسجيل'));
+        setError(backendMsg || t('auth:register.errors.failed'));
       }
     } catch (err) {
       // Prioritize identifying the exact backend error message
       const backendError = err.data?.data?.[0]?.message || err.data?.message;
-      setError(backendError || (i18n.language === 'en' ? 'An error occurred during registration' : 'حدث خطأ أثناء التسجيل'));
+      setError(backendError || t('auth:register.errors.failed'));
     }
   };
 
@@ -113,13 +113,13 @@ const RegisterMain = () => {
           <div className="google-sign d-flex justify-content-center align-items-center gap-2 mt-2">
             <img src="assets/google.svg" alt="google" />
             <h4 className="m-0">
-              {t('auth:login.googleLogin', i18n.language === 'en' ? 'Sign in with Google' : 'سجل الدخول باستخدام Google')}
+              {t('auth:login.googleLogin')}
             </h4>
           </div>
 
           {/* Divider */}
           <div className="divider">
-            <span>{t('common:buttons.or', i18n.language === 'en' ? 'Or' : 'أو')}</span>
+            <span>{t('common:buttons.or')}</span>
           </div>
 
           {error && <div className="alert alert-danger w-100 text-center py-2" style={{fontSize: '14px'}}>{error}</div>}
@@ -130,13 +130,13 @@ const RegisterMain = () => {
               <div className="col-md-6">
                 <div className="mb-2">
                   <label className="form-label">
-                    {t('auth:register.firstName', i18n.language === 'en' ? 'First Name' : 'الاسم الأول')}
+                    {t('auth:register.firstName')}
                   </label>
                   <input
                     name="name"
                     type="text"
                     className="form-control form-input py-2"
-                    placeholder={i18n.language === 'en' ? 'First Name' : 'الاسم الأول'}
+                    placeholder={t('auth:register.firstName')}
                     value={formData.name}
                     onChange={handleInputChange}
                     required
@@ -146,13 +146,13 @@ const RegisterMain = () => {
               <div className="col-md-6">
                 <div className="mb-2">
                   <label className="form-label">
-                    {t('auth:register.lastName', i18n.language === 'en' ? 'Last Name' : 'اسم العائلة')}
+                    {t('auth:register.lastName')}
                   </label>
                   <input
                     name="last_name"
                     type="text"
                     className="form-control form-input py-2"
-                    placeholder={i18n.language === 'en' ? 'Last Name' : 'اسم العائلة'}
+                    placeholder={t('auth:register.lastName')}
                     value={formData.last_name}
                     onChange={handleInputChange}
                     required
@@ -165,13 +165,13 @@ const RegisterMain = () => {
               <div className="col-md-6">
                 <div className="mb-2">
                   <label className="form-label">
-                    {i18n.language === 'en' ? 'Username' : 'اسم المستخدم'}
+                    {t('auth:register.username')}
                   </label>
                   <input
                     name="username"
                     type="text"
                     className="form-control form-input py-2"
-                    placeholder={i18n.language === 'en' ? 'Username' : 'اسم المستخدم'}
+                    placeholder={t('auth:register.username')}
                     value={formData.username}
                     onChange={handleInputChange}
                     required
@@ -181,7 +181,7 @@ const RegisterMain = () => {
               <div className="col-md-6">
                 <div className="mb-2">
                   <label className="form-label">
-                    {i18n.language === 'en' ? 'Mobile Number' : 'رقم الجوال'}
+                    {t('auth:register.phone')}
                   </label>
                   <input
                     name="mobile"
@@ -198,7 +198,7 @@ const RegisterMain = () => {
 
             <div className="mb-2">
               <label className="form-label">
-                {t('auth:register.email', i18n.language === 'en' ? 'Email' : 'البريد الإلكتروني')}
+                {t('auth:register.email')}
               </label>
               <input
                 name="email"
@@ -215,7 +215,7 @@ const RegisterMain = () => {
               <div className="col-md-6">
                 <div className="mb-2">
                   <label className="form-label">
-                    {t('auth:register.password', i18n.language === 'en' ? 'Password' : 'كلمة المرور')}
+                    {t('auth:register.password')}
                   </label>
                   <div className="position-relative">
                     <input
@@ -238,13 +238,13 @@ const RegisterMain = () => {
               <div className="col-md-6">
                 <div className="mb-2">
                   <label className="form-label">
-                    {i18n.language === 'en' ? 'Repeat Password' : 'تكرار كلمة المرور'}
+                    {t('auth:register.confirmPassword')}
                   </label>
                   <input
                     name="password_repeat"
                     type={showPassword ? 'text' : 'password'}
                     className="form-control form-input py-2"
-                    placeholder={i18n.language === 'en' ? 'Repeat Password' : 'تكرار كلمة المرور'}
+                    placeholder={t('auth:register.confirmPassword')}
                     value={formData.password_repeat}
                     onChange={handleInputChange}
                     required
@@ -256,7 +256,7 @@ const RegisterMain = () => {
             <div className="row">
               <div className="col-md-6">
                 <div className="mb-2">
-                  <label className="form-label">{t('auth:register.country', i18n.language === 'en' ? 'Country' : 'الدولة')}</label>
+                  <label className="form-label">{t('auth:register.country')}</label>
                   <select 
                     name="country_id" 
                     className="form-select form-input py-2"
@@ -264,7 +264,7 @@ const RegisterMain = () => {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">{i18n.language === 'en' ? 'Select Country' : 'اختر الدولة'}</option>
+                    <option value="">{t('auth:register.selectCountry')}</option>
                     {listsData?.Country?.map(c => (
                       <option key={c.id} value={c.id}>{getLangField(c, 'name')}</option>
                     ))}
@@ -273,7 +273,7 @@ const RegisterMain = () => {
               </div>
               <div className="col-md-6">
                 <div className="mb-2">
-                  <label className="form-label">{i18n.language === 'en' ? 'City' : 'المدينة'}</label>
+                  <label className="form-label">{t('auth:register.city')}</label>
                   <select 
                     name="city_id" 
                     className="form-select form-input py-2"
@@ -282,7 +282,7 @@ const RegisterMain = () => {
                     required
                     disabled={!formData.country_id}
                   >
-                    <option value="">{i18n.language === 'en' ? 'Select City' : 'اختر المدينة'}</option>
+                    <option value="">{t('auth:register.selectCity')}</option>
                     {filteredCities.map(c => (
                       <option key={c.id} value={c.id}>{getLangField(c, 'name')}</option>
                     ))}

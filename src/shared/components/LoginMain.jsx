@@ -113,12 +113,12 @@ const LoginMain = () => {
           {/* Google Login */}
           <div className="google-sign d-flex justify-content-center align-items-center gap-2 mt-2">
             <img src="assets/google.svg" alt="google" />
-            <h4 className="m-0">{t('auth:login.googleLogin', 'سجل الدخول باستخدام Google')}</h4>
+            <h4 className="m-0">{t('auth:login.googleLogin')}</h4>
           </div>
 
           {/* Divider */}
           <div className="divider">
-            <span>{t('common:buttons.or', 'أو')}</span>
+            <span>{t('common:buttons.or')}</span>
           </div>
 
           {error && <div className="alert alert-danger py-2 w-100 text-center" style={{ fontSize: '14px' }}>{error}</div>}

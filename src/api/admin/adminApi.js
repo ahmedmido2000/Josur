@@ -80,14 +80,15 @@ export const adminApi = baseApi.injectEndpoints({
     }),
     
     /**
-     * Add Driver
-     * POST /admin/drivers
+     * Add Driver (Signup Driver)
+     * POST /api/web/v1/site/signup-driver
      */
     addDriver: builder.mutation({
       query: (driverData) => ({
-        url: API_ENDPOINTS.ADMIN_DRIVERS,
+        url: API_ENDPOINTS.SIGNUP_DRIVER,
         method: 'POST',
         body: driverData,
+        // FormData is handled automatically by fetch if body is FormData
       }),
       invalidatesTags: ['Admin', 'Driver'],
     }),
@@ -128,6 +129,49 @@ export const adminApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Driver'],
     }),
+
+    /**
+     * Get Company Drivers
+     * GET /api/web/v1/site/company-driver
+     */
+    getCompanyDrivers: builder.query({
+      query: () => ({
+        url: API_ENDPOINTS.ADMIN_COMPANY_DRIVERS,
+        params: { 'access-token': localStorage.getItem('josur_auth_token') },
+      }),
+      providesTags: ['Driver'],
+    }),
+
+    /**
+     * Get Sub Trucks by ID
+     * GET /api/web/v1/site/sub-truck?id={truckId}
+     */
+    getSubTrucks: builder.query({
+      query: (truckId) => ({
+        url: API_ENDPOINTS.SUB_TRUCK,
+        params: { 
+          id: truckId,
+          'access-token': localStorage.getItem('josur_auth_token')
+        },
+      }),
+      transformResponse: (response) => {
+        return response.status === 1 ? response.data[0] : [];
+      },
+    }),
+
+    /**
+     * Add Vehicle (Add Truck)
+     * POST /api/web/v1/site/add-vehicle
+     */
+    addVehicle: builder.mutation({
+      query: (vehicleData) => ({
+        url: API_ENDPOINTS.ADMIN_ADD_VEHICLE,
+        method: 'POST',
+        params: { 'access-token': localStorage.getItem('josur_auth_token') },
+        body: vehicleData,
+      }),
+      invalidatesTags: ['Admin'],
+    }),
   }),
 });
 
@@ -143,4 +187,7 @@ export const {
   useGetAllDriversQuery,
   useUpdateDriverMutation,
   useDeleteDriverMutation,
+  useGetCompanyDriversQuery,
+  useGetSubTrucksQuery,
+  useAddVehicleMutation,
 } = adminApi;

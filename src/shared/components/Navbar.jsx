@@ -7,7 +7,7 @@ import { useAuth } from '../../hooks/useAuth';
 const Navbar = () => {
   const location = useLocation();
   const { t } = useTranslation(['common', 'auth', 'user']);
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, role } = useAuth();
   
   // Navigation items with translation keys
   const navItems = [
@@ -40,8 +40,8 @@ const Navbar = () => {
         {isAuthenticated && (
           <div className="d-flex d-lg-none align-items-center gap-2 ms-auto me-2">
             <LanguageSwitcher isMinimal={true} />
-            {user?.role === 'driver' ? (
-                <Link to="/driver/profile" className="text-decoration-none">
+            {(role === 'driver' || role === 'admin') ? (
+                <Link to={role === 'admin' ? "/admin/dashboard" : "/driver/profile"} className="text-decoration-none">
                     <img src={user?.avatar || "/assets/man.png"} className='user-img border shadow-sm' alt="user" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
                 </Link>
             ) : (
@@ -130,19 +130,25 @@ const Navbar = () => {
             <li className="nav-item d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2">
               {isAuthenticated ? (
                 <>
-                  {user?.role === 'driver' ? (
-                    <Link 
-                        to="/driver/profile" 
-                        className="login-button text-decoration-none d-flex align-items-center justify-content-center justify-content-lg-start gap-2 px-3 py-2 rounded-pill shadow-sm"
-                    >
-                        <img 
-                            src={user?.avatar || "/assets/avatar.png"} 
-                            alt="avatar" 
-                            style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} 
-                            onError={(e) => { e.target.src = "/assets/man.png" }}
-                        />
-                        <span className="fw-semibold">{(user?.name || t('navigation.profile'))}</span>
-                    </Link>
+                  {(role === 'driver' || role === 'admin') ? (
+                    <div className="d-flex align-items-center gap-2">
+                        <Link 
+                            to={role === 'admin' ? "/admin/dashboard" : "/driver/profile"} 
+                            className="login-button text-decoration-none d-flex align-items-center justify-content-center justify-content-lg-start gap-2 px-3 py-2 rounded-pill shadow-sm"
+                        >
+                            <img 
+                                src={user?.avatar || "/assets/avatar.png"} 
+                                alt="avatar" 
+                                style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} 
+                                onError={(e) => { e.target.src = "/assets/man.png" }}
+                            />
+                            <span className="fw-semibold">{(user?.name || t('navigation.profile'))}</span>
+                        </Link>
+                        <button onClick={logout} className="join-button text-decoration-none border-0 px-3 py-2 rounded-pill d-flex align-items-center justify-content-center gap-2">
+                            <i className="fas fa-sign-out-alt"></i>
+                            <span className="d-lg-none">{t('common:buttons.logout')}</span>
+                        </button>
+                    </div>
                   ) : (
                     <div className="dropdown d-flex justify-content-center">
                         <div 
@@ -196,12 +202,6 @@ const Navbar = () => {
                             </li>
                         </ul>
                     </div>
-                  )}
-                  {user?.role === 'driver' && (
-                    <button onClick={logout} className="join-button text-decoration-none border-0 px-3 py-2 rounded-pill d-flex align-items-center justify-content-center gap-2">
-                        <i className="fas fa-sign-out-alt"></i>
-                        <span className="d-lg-none">{t('buttons.logout', 'تسجيل الخروج')}</span>
-                    </button>
                   )}
                 </>
               ) : (
