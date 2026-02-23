@@ -50,7 +50,7 @@ const DriverBalanceMain = () => {
           <div key={item.id || index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
             <div className="d-flex align-items-center gap-2">
               <img 
-                src={item.on_him > 0 ? "../assets/arrow-square-up.svg" : "../assets/arrow-square-down.svg"} 
+                src={item.on_him > 0 ? "/assets/arrow-square-up.svg" : "/assets/arrow-square-down.svg"} 
                 alt="arrow" 
               />
               <p className='orders-card-title m-0'>{getLangField(item, 'note')}</p>

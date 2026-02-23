@@ -99,17 +99,17 @@ const NewOrders = ({ orders, isLoading }) => {
                 </div>
 
                 <div className="d-flex gap-2 align-items-center">
-                  <img src="../assets/calendar.svg" className='mb-1' alt="calendar" />
+                  <img src="/assets/calendar.svg" className='mb-1' alt="calendar" />
                   <h6 className='user-desc m-0'>{displayDate}</h6>
                   <FontAwesomeIcon icon={faCircle} className='dot-icon' />
                   <h6 className='user-desc m-0'>{displayTime}</h6>
                 </div>
 
                 <div className="d-flex align-items-center flex-wrap gap-2">
-                    <img src="../assets/distance.svg" alt="distance" />
+                    <img src="/assets/distance.svg" alt="distance" />
                     <p className="orders-card-title mb-2">-- كلم</p>
                     <FontAwesomeIcon icon={faCircle} className='dot-gray-8' />
-                    <img src="../assets/box.svg" alt="goods" />
+                    <img src="/assets/box.svg" alt="goods" />
                     <p className="orders-card-title mb-2">
                         {order.good_type_id?.name || '--'}
                     </p>

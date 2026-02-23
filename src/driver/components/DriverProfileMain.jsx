@@ -41,7 +41,7 @@ const DriverProfileMain = () => {
         country_id: (user.country_id && user.country_id !== 0 && user.country_id !== '0') ? user.country_id : '',
         city_id: (user.city_id && user.city_id !== 0 && user.city_id !== '0') ? user.city_id : '',
         image: null,
-        imagePreview: user.avatar || user.image || '../assets/man.png'
+        imagePreview: user.avatar || user.image || '/assets/man.png'
       });
     }
   }, [userFromRedux, profileData]);
@@ -104,7 +104,7 @@ const DriverProfileMain = () => {
       <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 pb-4">
       <div className="d-flex gap-3 align-items-center">
                     <div className="position-relative">
-                        <img src={formData.imagePreview || '../assets/man.png'} className='profile-main-img' alt="user" />
+                        <img src={formData.imagePreview || '/assets/man.png'} className='profile-main-img' alt="user" />
                         {isEditing && (
                             <div 
                                 className="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow-sm" 

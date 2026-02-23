@@ -103,23 +103,23 @@ const MissionStarted = () => {
   <div
     className={`truck-position step-${currentStep}`}
   >
-    <img src="../assets/filter-card-img-1.png" alt="truck" />
+    <img src="/assets/filter-card-img-1.png" alt="truck" />
   </div>
 </div>
 </div>
-<button type='button' className="login-button text-decoration-none w-100 mt-3 d-flex align-items-center gap-1 justify-content-center take-img-btn"><img src="../assets/camera.svg" alt="" /> التقاط صورة للحمولة </button>
+<button type='button' className="login-button text-decoration-none w-100 mt-3 d-flex align-items-center gap-1 justify-content-center take-img-btn"><img src="/assets/camera.svg" alt="" /> التقاط صورة للحمولة </button>
 <div className="taken-imgs d-flex gap-2 align-items-center flex-wrap mt-3">
     <div className="taken-img position-relative">
-        <img src="../assets/taken-img-1.png" className="taken-img" alt="taken-img" />
-        <img src="../assets/close.svg" className="delete-taken-img" alt="taken-img" />
+        <img src="/assets/taken-img-1.png" className="taken-img" alt="taken-img" />
+        <img src="/assets/close.svg" className="delete-taken-img" alt="taken-img" />
     </div>
     <div className="taken-img position-relative">
-        <img src="../assets/taken-img-2.png" className="taken-img" alt="taken-img" />
-        <img src="../assets/close.svg" className="delete-taken-img" alt="taken-img" />
+        <img src="/assets/taken-img-2.png" className="taken-img" alt="taken-img" />
+        <img src="/assets/close.svg" className="delete-taken-img" alt="taken-img" />
     </div>
     <div className="taken-img position-relative">
-        <img src="../assets/taken-img-3.png" className="taken-img" alt="taken-img" />
-        <img src="../assets/close.svg" className="delete-taken-img" alt="taken-img" />
+        <img src="/assets/taken-img-3.png" className="taken-img" alt="taken-img" />
+        <img src="/assets/close.svg" className="delete-taken-img" alt="taken-img" />
     </div>
 </div>
 <div className="d-flex justify-content-between align-items-center flex-wrap">
@@ -143,11 +143,11 @@ const MissionStarted = () => {
                 </div>
                 <div className="d-flex align-items-center flex-wrap gap-2 mt-3">
                     <h2 className='orders-title'>المسافة</h2>
-                    <img src="../assets/distance.svg" alt="distance" />
+                    <img src="/assets/distance.svg" alt="distance" />
                     <p className="orders-card-title mb-2">33 كلم</p>
                     <FontAwesomeIcon icon={faCircle} className='dot-gray-8' />
                     <h2 className='orders-title'>الحمولة</h2>
-                    <img src="../assets/box.svg" alt="distance" />
+                    <img src="/assets/box.svg" alt="distance" />
                     <p className="orders-card-title mb-2">أثاث منزلي</p>
                 </div>
                 <div className="d-flex gap-2 align-items-center mt-3">

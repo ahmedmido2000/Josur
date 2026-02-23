@@ -45,7 +45,7 @@ const DriverNotifications = () => {
                         {notifications.map((item, index) => (
                             <React.Fragment key={index}>
                                 <div className="notification-item d-flex align-items-start gap-2">
-                                    <img src={item.avatar || "../assets/man.png"} className='notification-user-img' alt="user" />
+                                    <img src={item.avatar || "/assets/man.png"} className='notification-user-img' alt="user" />
                                     <div>
                                         <div className="d-flex align-items-center gap-1 mb-1 flex-wrap">
                                             <h6 className='document-li m-0'>{getLangField(item, 'msg')}</h6>
@@ -88,7 +88,7 @@ const DriverNotifications = () => {
       <h3 className="orders-title mb-4">{t('notification.rating.title')}</h3>
 
       {/* User Info */}
-      <img src="../assets/man.png" className="rating-user-img" alt="" />
+      <img src="/assets/man.png" className="rating-user-img" alt="" />
       <h4 className="orders-card-title mb-2">User Name</h4>
       <div className="d-flex gap-1 align-items-center mb-4">
             {[1, 2, 3, 4, 5].map((star) => (

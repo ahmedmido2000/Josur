@@ -101,11 +101,11 @@ const OrderDetails = () => {
                                             <p className="footer-main-sublabel mb-2">{order.city_from || '--'}</p>
                                             <p className="not-have mb-2">{t('driver:orders.receipt_time') || 'وقت الاستلام'}</p>
                                             <div className="d-flex gap-2 align-items-center">
-                <img src="../assets/calendar.svg" className='mb-1' alt="calendar" />
-                <h6 className='user-desc m-0'>{displayDate}</h6>
-                <FontAwesomeIcon icon={faCircle} className='dot-icon' />
-                <h6 className='user-desc m-0'>{displayTime}</h6>
-              </div>
+                                                <img src="/assets/calendar.svg" className='mb-1' alt="calendar" />
+                                                <h6 className='user-desc m-0'>{displayDate}</h6>
+                                                <FontAwesomeIcon icon={faCircle} className='dot-icon' />
+                                                <h6 className='user-desc m-0'>{displayTime}</h6>
+                                            </div>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
@@ -114,11 +114,11 @@ const OrderDetails = () => {
                                             <p className="footer-main-sublabel mb-2">{order.city_to || '--'}</p>
                                             <p className="not-have mb-2">{t('driver:orders.delivery_time') || 'وقت التسليم'}</p>
                                             <div className="d-flex gap-2 align-items-center">
-                <img src="../assets/calendar.svg" className='mb-1' alt="calendar" />
-                <h6 className='user-desc m-0'>{order.date_delivery || '--'}</h6>
-                <FontAwesomeIcon icon={faCircle} className='dot-icon' />
-                <h6 className='user-desc m-0'>{order.time_delivery || '--'}</h6>
-              </div>
+                                                <img src="/assets/calendar.svg" className='mb-1' alt="calendar" />
+                                                <h6 className='user-desc m-0'>{order.date_delivery || '--'}</h6>
+                                                <FontAwesomeIcon icon={faCircle} className='dot-icon' />
+                                                <h6 className='user-desc m-0'>{order.time_delivery || '--'}</h6>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>

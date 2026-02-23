@@ -43,7 +43,16 @@
             "basic": "Upload Basic Documents",
             "trip": "Upload Trip Documents",
             "contract": "Upload Contract"
-        }
+        },
+        "tracking_steps": {
+            "receipt": "Receipt Shipment",
+            "on_way": "On the way",
+            "delivery": "Cargo Delivery"
+        },
+        "distance": "Distance",
+        "cargo_type": "Cargo Type",
+        "remaining": "Remaining",
+        "km": "KM"
     },
     "basicUpload": {
         "title": "Upload Request",

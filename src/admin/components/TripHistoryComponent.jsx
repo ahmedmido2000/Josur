@@ -13,7 +13,7 @@ const TripHistoryComponent = () => {
           <p className='user-desc m-0 mt-1'>سجلات الرحلات التفصيلية وتحليلات الأداء</p>
         </div>
         <button type='button' className="login-button text-decoration-none d-flex align-items-center gap-2 justify-content-center take-img-btn"> 
-          <img src="../assets/document-download.svg" alt="download" /> تحميل التقرير
+          <img src="/assets/document-download.svg" alt="download" /> تحميل التقرير
         </button>
       </div>
       <div className="row">

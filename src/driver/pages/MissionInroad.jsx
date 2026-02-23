@@ -103,7 +103,7 @@ const MissionInroad = () => {
   <div
     className={`truck-position step-${currentStep}`}
   >
-    <img src="../assets/filter-card-img-1.png" alt="truck" />
+    <img src="/assets/filter-card-img-1.png" alt="truck" />
   </div>
 </div>
 </div>
@@ -128,11 +128,11 @@ const MissionInroad = () => {
                 </div>
                 <div className="d-flex align-items-center flex-wrap gap-2 mt-3">
                     <h2 className='orders-title'>المسافة</h2>
-                    <img src="../assets/distance.svg" alt="distance" />
+                    <img src="/assets/distance.svg" alt="distance" />
                     <p className="orders-card-title mb-2">33 كلم</p>
                     <FontAwesomeIcon icon={faCircle} className='dot-gray-8' />
                     <h2 className='orders-title'>الحمولة</h2>
-                    <img src="../assets/box.svg" alt="distance" />
+                    <img src="/assets/box.svg" alt="distance" />
                     <p className="orders-card-title mb-2">أثاث منزلي</p>
                 </div>
                 <div className="d-flex gap-2 align-items-center mt-3">

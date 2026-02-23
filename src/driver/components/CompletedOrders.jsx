@@ -49,7 +49,7 @@ const CompletedOrders = ({ orders, isLoading, onRateClient }) => {
                       <div className="d-flex gap-1 align-items-center">
                         <h6 className="user-name m-0">{userName}</h6>
                         <div className="new-order-badge p-1 rounded-2 text-nowrap">
-                            {userRate} <img src="../assets/star.svg" alt="rate" />
+                            {userRate} <img src="/assets/star.svg" alt="rate" />
                         </div>
                       </div>
                       <p className="user-desc m-0">{order.city_from || '--'}</p>
@@ -76,7 +76,7 @@ const CompletedOrders = ({ orders, isLoading, onRateClient }) => {
               </div>
 
               <div className="d-flex gap-2 align-items-center">
-                <img src="../assets/calendar.svg" className='mb-1' alt="calendar" />
+                <img src="/assets/calendar.svg" className='mb-1' alt="calendar" />
                 <h6 className='user-desc m-0'>{displayDate}</h6>
                 <FontAwesomeIcon icon={faCircle} className='dot-icon' />
                 <h6 className='user-desc m-0'>{displayTime}</h6>

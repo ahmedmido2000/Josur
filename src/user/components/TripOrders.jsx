@@ -296,7 +296,7 @@ const TripOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRati
 
                   <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 w-100">
                     <div className="d-flex align-items-center gap-2">
-                    <Link to='/user/tracking' className="offers-dropdown text-decoration-none d-flex align-items-center justify-content-center gap-2">
+                    <Link to='/user/tracking' state={{ order }} className="offers-dropdown text-decoration-none d-flex align-items-center justify-content-center gap-2">
                         <h6 className='offers-dropdown-text m-0'>{t('user:user.tracking')}</h6>
                       </Link>
                       <div className="contact-driver-button">

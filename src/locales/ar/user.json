@@ -43,7 +43,16 @@
             "basic": "رفع المستندات الأساسية",
             "trip": "رفع مستندات الرحلة",
             "contract": "رفع العقد"
-        }
+        },
+        "tracking_steps": {
+            "receipt": "استلام الشحنة",
+            "on_way": "في الطريق للشحن",
+            "delivery": "تسليم الحمولة"
+        },
+        "distance": "المسافة",
+        "cargo_type": "الحمولة",
+        "remaining": "باقي",
+        "km": "كلم"
     },
     "basicUpload": {
         "title": "رفع الطلب",

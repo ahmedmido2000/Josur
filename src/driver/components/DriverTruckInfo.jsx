@@ -355,7 +355,7 @@ const DriverTruckInfo = ({ user }) => {
           <div className="col-lg-4">
             <div className={`p-3 rounded-3 h-100 d-flex flex-column align-items-center justify-content-center ${(!isEditing && !isAdding) ? 'bg-light' : ''}`}>
                 <img 
-                    src={vehicleData?.truck_image || '../assets/truck-details-img.png'} 
+                    src={vehicleData?.truck_image || '/assets/truck-details-img.png'} 
                     className="img-fluid rounded-3 mb-3 mx-auto shadow-sm" 
                     style={{ maxHeight: '200px', objectFit: 'contain' }}
                     alt="truck" 

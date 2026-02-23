@@ -21,7 +21,7 @@ const MissionArrived = () => {
                             <h2 className='orders-title'>اطلب من العميل التوقيع على الشاشة</h2>
                             <div className="mt-3 h-100">
                                 <div className="assigned-img d-flex justify-content-center align-items-center">
-                                    <img src="../assets/assigned-img.png" className="img-fluid" alt="" />
+                                    <img src="/assets/assigned-img.png" className="img-fluid" alt="" />
                                 </div>
                             </div>
                         </div>
@@ -43,23 +43,23 @@ const MissionArrived = () => {
                                     <div className="mb-3">
                                         <label className="form-label mb-1">التقط صورة للحمولة</label>
                                         <button type='button' className="login-button text-decoration-none w-100 d-flex align-items-center gap-1 justify-content-center take-img-btn">
-                                            <img src="../assets/camera.svg" alt="" /> التقاط صورة للحمولة 
+                                            <img src="/assets/camera.svg" alt="" /> التقاط صورة للحمولة 
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div className="taken-imgs d-flex gap-2 align-items-center flex-wrap mb-3">
                                 <div className="taken-img position-relative">
-                                    <img src="../assets/taken-img-1.png" className="taken-img" alt="taken-img" />
-                                    <img src="../assets/close.svg" className="delete-taken-img" alt="taken-img" />
+                                    <img src="/assets/taken-img-1.png" className="taken-img" alt="taken-img" />
+                                    <img src="/assets/close.svg" className="delete-taken-img" alt="taken-img" />
                                 </div>
                                 <div className="taken-img position-relative">
-                                    <img src="../assets/taken-img-2.png" className="taken-img" alt="taken-img" />
-                                    <img src="../assets/close.svg" className="delete-taken-img" alt="taken-img" />
+                                    <img src="/assets/taken-img-2.png" className="taken-img" alt="taken-img" />
+                                    <img src="/assets/close.svg" className="delete-taken-img" alt="taken-img" />
                                 </div>
                                 <div className="taken-img position-relative">
-                                    <img src="../assets/taken-img-3.png" className="taken-img" alt="taken-img" />
-                                    <img src="../assets/close.svg" className="delete-taken-img" alt="taken-img" />
+                                    <img src="/assets/taken-img-3.png" className="taken-img" alt="taken-img" />
+                                    <img src="/assets/close.svg" className="delete-taken-img" alt="taken-img" />
                                 </div>
                             </div>
                             {/* Shipment Progress */}
@@ -94,7 +94,7 @@ const MissionArrived = () => {
                                     <div
                                         className={`truck-position step-${currentStep}`}
                                     >
-                                        <img src="../assets/filter-card-img-1.png" alt="truck" />
+                                        <img src="/assets/filter-card-img-1.png" alt="truck" />
                                     </div>
                                 </div>
                             </div>
@@ -119,11 +119,11 @@ const MissionArrived = () => {
                                 </div>
                                 <div className="d-flex align-items-center flex-wrap gap-2 mt-3">
                                     <h2 className='orders-title'>المسافة</h2>
-                                    <img src="../assets/distance.svg" alt="distance" />
+                                    <img src="/assets/distance.svg" alt="distance" />
                                     <p className="orders-card-title mb-2">33 كلم</p>
                                     <FontAwesomeIcon icon={faCircle} className='dot-gray-8' />
                                     <h2 className='orders-title'>الحمولة</h2>
-                                    <img src="../assets/box.svg" alt="distance" />
+                                    <img src="/assets/box.svg" alt="distance" />
                                     <p className="orders-card-title mb-2">أثاث منزلي</p>
                                 </div>
                                 <div className="d-flex gap-2 align-items-center mt-3">

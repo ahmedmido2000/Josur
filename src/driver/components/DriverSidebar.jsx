@@ -41,7 +41,7 @@ const DriverSidebar = () => {
             style={{ cursor: 'pointer' }}
           >
             <img 
-              src={`../assets/${isActive ? item.icon.replace('.svg', '-active.svg') : item.icon}`} 
+              src={`/assets/${isActive ? item.icon.replace('.svg', '-active.svg') : item.icon}`} 
               alt={item.title} 
             />
             <h6 className='user-sidebar-title m-0'>{item.title}</h6>

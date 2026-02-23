@@ -130,7 +130,7 @@ const DriverOrdersMain = () => {
               style={{ cursor: 'pointer' }}
             >
               <img 
-                src={`../assets/${activeSubFilter === filter.id ? filter.icon.replace('.svg', '-active.svg') : filter.icon}`} 
+                src={`/assets/${activeSubFilter === filter.id ? filter.icon.replace('.svg', '-active.svg') : filter.icon}`} 
                 alt={filter.label} 
               />                
               <h6 className='sub-filter-text m-0'>{filter.label}</h6>
@@ -152,7 +152,7 @@ const DriverOrdersMain = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* User Info */}
-            <img src={selectedOrder?.user_id?.avatar || "../assets/man.png"} className="rating-user-img" alt="user" />
+            <img src={selectedOrder?.user_id?.avatar || "/assets/man.png"} className="rating-user-img" alt="user" />
             <h4 className="orders-card-title mb-2">{selectedOrder?.user_id?.name || 'عميل'}</h4>
             <h4 className="user-desc mb-2">{selectedOrder?.city_from || '--'}</h4>
             
