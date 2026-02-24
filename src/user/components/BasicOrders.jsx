@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircle, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -22,6 +22,11 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
   const { token } = useAuth();
   const navigate = useNavigate();
   const currentLanguage = i18n.language || 'ar';
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [activeSubFilter]);
 
   const [acceptOffer, { isLoading: isAccepting }] = useAcceptOfferMutation();
 
@@ -47,10 +52,10 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
   };
 
   // Call all hooks to follow Rules of Hooks, but use 'skip' to only fire the active one
-  const newRequests = useGetNormalNewOrdersQuery(token, { skip: activeSubFilter !== 'new-request' });
-  const shippingRequests = useGetNormalShippingOrdersQuery(token, { skip: activeSubFilter !== 'waiting' });
-  const completeRequests = useGetNormalCompleteOrdersQuery(token, { skip: activeSubFilter !== 'shipped' });
-  const canceledRequests = useGetNormalCanceledOrdersQuery(token, { skip: activeSubFilter !== 'cancelled' });
+  const newRequests = useGetNormalNewOrdersQuery({ token, page }, { skip: activeSubFilter !== 'new-request' });
+  const shippingRequests = useGetNormalShippingOrdersQuery({ token, page }, { skip: activeSubFilter !== 'waiting' });
+  const completeRequests = useGetNormalCompleteOrdersQuery({ token, page }, { skip: activeSubFilter !== 'shipped' });
+  const canceledRequests = useGetNormalCanceledOrdersQuery({ token, page }, { skip: activeSubFilter !== 'cancelled' });
 
   // Select the active query result
   const activeQueryResult = 
@@ -187,7 +192,9 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
                        <div key={offer.id} className="offer-item position-relative border rounded-3 p-3 mb-3 bg-white" style={{ border: '1px solid #f0f0f0' }}>
                           <div className="d-flex justify-content-between align-items-start gap-2">
                             {/* Right Part (Child 1): Driver Info + Truck Details */}
-                            <div className='d-flex align-items-center gap-3'>
+                            <div className='d-flex align-items-center gap-3'
+                                 onClick={() => navigate('/user/provider-account', { state: { provider: offer.driver_id } })}
+                                 style={{ cursor: 'pointer' }}>
                                 <div className="driver-avatar-wrapper position-relative">
                                     <img src={offer.driver_id?.avatar || "../assets/man.png"} 
                                          alt="driver" 
@@ -265,7 +272,9 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
                   
                   <div className="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
                     {driverObj && (
-                      <div className="d-flex gap-2 align-items-start">
+                      <div className="d-flex gap-2 align-items-start"
+                           onClick={() => navigate('/user/provider-account', { state: { provider: driverObj } })}
+                           style={{ cursor: 'pointer' }}>
                         <img src={driverObj.avatar || "/assets/man.png"} className='user-img' alt="user" />
                         <div>
                           <div className="d-flex gap-1 align-items-center">
@@ -339,7 +348,8 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
                   <div className="d-flex justify-content-between align-items-center w-100">
                     <div className="d-flex flex-wrap gap-4">
                       {driverObj && (
-                        <div>
+                        <div onClick={() => navigate('/user/provider-account', { state: { provider: driverObj } })}
+                             style={{ cursor: 'pointer' }}>
                           <h5 className='footer-link'>{t('common:provider')}</h5>
                           <div className="d-flex gap-2 align-items-start">
                             <img src={driverObj.avatar || "../assets/man.png"} className='user-img' alt="user" />
@@ -398,6 +408,8 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
             </div>
           );
         } else if (activeSubFilter === 'cancelled') {
+          const cancelDate = order.created_at ? order.created_at.split(' ')[0] : (displayDate !== '0000-00-00' ? displayDate : '--');
+          const cancelTime = order.created_at ? order.created_at.split(' ')[1]?.substring(0, 5) : (displayTime || '--');
           return (
             <div key={order.id} className="cancelled-orders-card p-2 border rounded-3 mt-2">
               <div className="card-order-details">
@@ -405,6 +417,31 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
                   <div className='d-flex align-items-center justify-content-between w-100'>
                     <h3 className='orders-card-title m-0 mb-1'>{getName(goodTypeObj)}</h3>
                     <div className="cancelled-badge py-1 px-2 rounded-2 text-nowrap d-flex align-items-center">{t('common:status.cancelled')}</div>
+                  </div>
+
+                  {driverObj && (
+                    <div onClick={() => navigate('/user/provider-account', { state: { provider: driverObj } })}
+                         style={{ cursor: 'pointer' }}>
+                      <h5 className='footer-link'>{t('common:provider')}</h5>
+                      <div className="d-flex gap-2 align-items-start">
+                        <img src={driverObj.avatar || "../assets/man.png"} className='user-img' alt="user" />
+                        <div>
+                          <div className="d-flex gap-1 align-items-center">
+                            <h6 className="user-name m-0">{driverObj.name}</h6>
+                            <div className="new-order-badge p-1 rounded-2 text-nowrap">{driverObj.rate} <img src="../assets/star.svg" alt="" /></div>
+                          </div>
+                          <p className="user-desc m-0">{t('user:user.orders.driver_title')}: {getName(truckObj)}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <h5 className='footer-link'>{t('user:basicUpload.truckData')}</h5>
+                    <div className="d-flex align-items-center gap-2">
+                      {truckImg && <img src={truckImg} alt="truck" style={{ width: '40px', height: 'auto', borderRadius: '4px' }} />}
+                      <h6 className='driver-truck-type m-0'>{getName(truckObj)} {order.sub_truck_id ? `- ${getName(order.sub_truck_id)}` : ''}</h6>
+                    </div>
                   </div>
 
                   <div className="from-to-wrapper">
@@ -426,7 +463,9 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
 
                   <div className="d-flex gap-2 align-items-center">
                     <img src="../assets/calendar.svg" className='mb-1' alt="calender" />
-                    <h6 className='user-desc m-0'>{displayDate}</h6>
+                    <h6 className='user-desc m-0'>{cancelDate}</h6>
+                    <FontAwesomeIcon icon={faCircle} className='dot-icon' />
+                    <h6 className='user-desc m-0'>{cancelTime}</h6>
                   </div>
 
                   <div className="d-flex align-items-center gap-2 mt-2">
@@ -444,6 +483,32 @@ const BasicOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRat
         }
         return null;
       })}
+
+      {/* Pagination */}
+      {(() => {
+        const meta = response?.data?.[0]?._meta || {};
+        const totalPages = meta.NumberOfPage || 1;
+        if (totalPages <= 1) return null;
+        return (
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+            <button
+              className="btn btn-outline-primary btn-sm px-3"
+              disabled={page <= 1}
+              onClick={() => setPage(p => p - 1)}
+            >
+              {currentLanguage === 'ar' ? 'السابق' : 'Previous'}
+            </button>
+            <span className="fw-bold">{page} / {totalPages}</span>
+            <button
+              className="btn btn-outline-primary btn-sm px-3"
+              disabled={page >= totalPages}
+              onClick={() => setPage(p => p + 1)}
+            >
+              {currentLanguage === 'ar' ? 'التالي' : 'Next'}
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 };

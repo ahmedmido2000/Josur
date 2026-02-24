@@ -81,6 +81,7 @@ function App() {
       <Route path="/user/contract-upload" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><ContractUpload /></RoleBasedRoute>} />
       <Route path="/user/notifications" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Notifications /></RoleBasedRoute>} />
       <Route path="/user/tracking" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Tracking /></RoleBasedRoute>} />
+      <Route path="/user/providerAccount" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><ProviderAccount /></RoleBasedRoute>} />
       
       {/* Driver Routes - Only accessible to authenticated users with 'driver' role */}
       <Route path="/driver/orders" element={<RoleBasedRoute allowedRoles={[USER_ROLES.DRIVER]}><DriverOrders /></RoleBasedRoute>} />

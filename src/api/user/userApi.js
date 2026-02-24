@@ -100,9 +100,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Normal New Orders
      */
     getNormalNewOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_NORMAL_NEW_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -111,9 +111,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Normal Shipping Orders
      */
     getNormalShippingOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_NORMAL_SHIPPING_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -122,9 +122,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Normal Complete Orders
      */
     getNormalCompleteOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_NORMAL_COMPLETE_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -133,9 +133,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Normal Canceled Orders
      */
     getNormalCanceledOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_NORMAL_CANCELED_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -144,9 +144,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Trip New Orders
      */
     getTripNewOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_TRIP_NEW_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -155,9 +155,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Trip Shipping Orders
      */
     getTripShippingOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_TRIP_SHIPPING_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -166,9 +166,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Trip Complete Orders
      */
     getTripCompleteOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_TRIP_COMPLETE_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -177,9 +177,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Trip Canceled Orders
      */
     getTripCanceledOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_TRIP_CANCELED_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -188,9 +188,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Contract New Orders
      */
     getContractNewOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_CONTRACT_NEW_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -199,9 +199,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Contract Shipping Orders
      */
     getContractShippingOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_CONTRACT_SHIPPING_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -210,9 +210,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Contract Complete Orders
      */
     getContractCompleteOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_CONTRACT_COMPLETE_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),
@@ -221,9 +221,9 @@ export const userApi = baseApi.injectEndpoints({
      * Get Contract Canceled Orders
      */
     getContractCanceledOrders: builder.query({
-      query: (token) => ({
+      query: ({ token, page = 1 } = {}) => ({
         url: API_ENDPOINTS.MY_CONTRACT_CANCELED_ORDERS,
-        params: token ? { 'access-token': token } : {},
+        params: { ...(token ? { 'access-token': token } : {}), page },
       }),
       providesTags: ['Order'],
     }),

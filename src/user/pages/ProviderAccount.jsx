@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import UserNavbar from '../components/UserNavbar'
 import UserSidebar from '../components/UserSidebar'
 import ProfileMain from '../components/ProfileMain'
@@ -9,6 +10,8 @@ import { faLocationDot, faArrowDownLong, faCircle, faStar} from "@fortawesome/fr
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 const ProviderAccount = () => {
+    const location = useLocation();
+    const provider = location.state?.provider || {};
     const [activeSubFilter, setActiveSubFilter] = useState('new-request');
 
     // Sub filters data
@@ -48,11 +51,11 @@ const ProviderAccount = () => {
                     <div className="col-12">
                         <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 pb-4">
                             <div className="d-flex gap-3 align-items-center">
-                                <img src="../assets/man.png" className='profile-main-img' alt="user" />
+                                <img src={provider?.avatar || "../assets/man.png"} className='profile-main-img' alt="user" />
                                 <div>
-                                    <h6 className="orders-title m-0">Habib Meddour</h6>
+                                    <h6 className="orders-title m-0">{provider?.name || 'Habib Meddour'}</h6>
                                     <div className="d-flex gap-2 align-items-center mt-2">
-                                        <div className="new-order-badge p-1 rounded-2 text-nowrap">4,9 <img src="../assets/star.svg" alt="" /></div>
+                                        <div className="new-order-badge p-1 rounded-2 text-nowrap">{provider?.rate || '4,9'} <img src="../assets/star.svg" alt="" /></div>
                                         <div className="completed-orders-badge p-1 rounded-2 text-nowrap"><span className='number'>38</span> <span>طلب مكتمل</span></div>
                                     </div>
                                 </div>

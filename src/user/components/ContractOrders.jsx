@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,11 @@ const ContractOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShow
   const { token } = useAuth();
   const navigate = useNavigate();
   const currentLanguage = i18n.language || 'ar';
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [activeSubFilter]);
 
   const [acceptOffer, { isLoading: isAccepting }] = useAcceptOfferMutation();
 
@@ -45,10 +50,10 @@ const ContractOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShow
   };
 
   // Call all hooks to follow Rules of Hooks, but use 'skip' to only fire the active one
-  const newRequests = useGetContractNewOrdersQuery(token, { skip: activeSubFilter !== 'new-request' });
-  const shippingRequests = useGetContractShippingOrdersQuery(token, { skip: activeSubFilter !== 'waiting' });
-  const completeRequests = useGetContractCompleteOrdersQuery(token, { skip: activeSubFilter !== 'shipped' });
-  const canceledRequests = useGetContractCanceledOrdersQuery(token, { skip: activeSubFilter !== 'cancelled' });
+  const newRequests = useGetContractNewOrdersQuery({ token, page }, { skip: activeSubFilter !== 'new-request' });
+  const shippingRequests = useGetContractShippingOrdersQuery({ token, page }, { skip: activeSubFilter !== 'waiting' });
+  const completeRequests = useGetContractCompleteOrdersQuery({ token, page }, { skip: activeSubFilter !== 'shipped' });
+  const canceledRequests = useGetContractCanceledOrdersQuery({ token, page }, { skip: activeSubFilter !== 'cancelled' });
 
   // Select the active query result
   const activeQueryResult = 
@@ -151,6 +156,24 @@ const ContractOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShow
               <h6 className='user-desc m-0'>{order.created_at !== "0000-00-00 00:00:00" ? order.created_at : '--'}</h6>
             </div>
 
+            {(activeSubFilter === 'waiting' || activeSubFilter === 'shipped' || activeSubFilter === 'cancelled') && order.driver_id && (
+              <div className="mt-3 pt-2 border-top"
+                   onClick={() => navigate('/user/provider-account', { state: { provider: order.driver_id } })}
+                   style={{ cursor: 'pointer' }}>
+                <h5 className='footer-link mb-2'>{t('common:provider')}</h5>
+                <div className="d-flex gap-2 align-items-start">
+                  <img src={order.driver_id.avatar || "../assets/man.png"} className='user-img' alt="user" />
+                  <div>
+                    <div className="d-flex gap-1 align-items-center">
+                      <h6 className="user-name m-0">{order.driver_id.name}</h6>
+                      <div className="new-order-badge p-1 rounded-2 text-nowrap">{order.driver_id.rate || '0'} <img src="../assets/star.svg" alt="" /></div>
+                    </div>
+                    <p className="user-desc m-0">{t('user:user.orders.driver_title')}: {getName(order.driver_id.truck_type)}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="order-actions d-flex flex-wrap gap-2 mt-3 pt-2 border-top">
               {activeSubFilter === 'new-request' && (
                 <>
@@ -197,7 +220,9 @@ const ContractOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShow
                        <div key={offer.id} className="offer-item position-relative border rounded-3 p-3 mb-3 bg-white" style={{ border: '1px solid #f0f0f0' }}>
                           <div className="d-flex justify-content-between align-items-start gap-2">
                             {/* Right Part (Child 1): Driver Info + Truck Details */}
-                            <div className='d-flex align-items-center gap-3'>
+                            <div className='d-flex align-items-center gap-3'
+                                 onClick={() => navigate('/user/provider-account', { state: { provider: offer.driver_id } })}
+                                 style={{ cursor: 'pointer' }}>
                                 <div className="driver-avatar-wrapper position-relative">
                                     <img src={offer.driver_id?.avatar || "../assets/man.png"} 
                                          alt="driver" 
@@ -261,6 +286,32 @@ const ContractOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShow
           </div>
         );
       })}
+
+      {/* Pagination */}
+      {(() => {
+        const meta = response?.data?.[0]?._meta || {};
+        const totalPages = meta.NumberOfPage || 1;
+        if (totalPages <= 1) return null;
+        return (
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+            <button
+              className="btn btn-outline-primary btn-sm px-3"
+              disabled={page <= 1}
+              onClick={() => setPage(p => p - 1)}
+            >
+              {currentLanguage === 'ar' ? 'السابق' : 'Previous'}
+            </button>
+            <span className="fw-bold">{page} / {totalPages}</span>
+            <button
+              className="btn btn-outline-primary btn-sm px-3"
+              disabled={page >= totalPages}
+              onClick={() => setPage(p => p + 1)}
+            >
+              {currentLanguage === 'ar' ? 'التالي' : 'Next'}
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 };
