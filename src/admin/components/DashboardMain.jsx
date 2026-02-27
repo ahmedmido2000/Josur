@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Import new components
 import VehiclesComponent from './VehiclesComponent';
@@ -11,6 +12,8 @@ import TripHistoryComponent from './TripHistoryComponent';
 import SettingsComponent from './SettingsComponent';
 
 const DashboardMain = () => {
+  const { t } = useTranslation(['admin']);
+
   // State for tracking active sub-filter
   const [activeSubFilter, setActiveSubFilter] = useState('vehicles');
   
@@ -21,27 +24,27 @@ const DashboardMain = () => {
   const subFilters = [
     {
       id: 'vehicles',
-      label: 'المركبات',
+      label: t('admin:dashboard.vehicles'),
       icon: 'admin-filter-icon-1.svg'
     },
     {
       id: 'drivers',
-      label: 'السائقين',
+      label: t('admin:dashboard.drivers'),
       icon: 'admin-filter-icon-2.svg'
     },
     {
       id: 'live-tracking',
-      label: 'التتبع المباشر',
+      label: t('admin:dashboard.liveTracking'),
       icon: 'admin-filter-icon-3.svg'
     },
     {
       id: 'trip-history',
-      label: 'سجل الرحلات',
+      label: t('admin:dashboard.tripHistory'),
       icon: 'admin-filter-icon-4.svg'
     },
     {
       id: 'settings',
-      label: 'الاعدادات',
+      label: t('admin:dashboard.settingsTab'),
       icon: 'admin-filter-icon-5.svg'
     }
   ];
@@ -63,19 +66,19 @@ const DashboardMain = () => {
     if (activeSubFilter === 'vehicles' || activeSubFilter === 'live-tracking') {
       return (
         <Link to='/admin/add-truck' className="login-button text-decoration-none d-flex align-items-center gap-2 justify-content-center take-img-btn"> 
-          <FontAwesomeIcon icon={faPlus} /> اضافة مركبة
+          <FontAwesomeIcon icon={faPlus} /> {t('admin:dashboard.addVehicleBtn')}
         </Link>
       );
     } else if (activeSubFilter === 'drivers') {
       return (
         <Link to='/admin/add-driver' className="login-button text-decoration-none d-flex align-items-center gap-2 justify-content-center take-img-btn"> 
-          <FontAwesomeIcon icon={faPlus} /> دعوة سائق
+          <FontAwesomeIcon icon={faPlus} /> {t('admin:dashboard.inviteDriverBtn')}
         </Link>
       );
     } else if (activeSubFilter === 'settings') {
       return (
         <button type='button' className="login-button text-decoration-none d-flex align-items-center gap-2 justify-content-center take-img-btn"> 
-           تعديل الكل
+           {t('admin:dashboard.editAllBtn')}
         </button>
       );
     }
@@ -104,7 +107,7 @@ const DashboardMain = () => {
   return (
     <section>
       <div className="d-flex justify-content-between align-items-center">
-        <h4 className="orders-title m-0">لوحة معلومات المالك</h4>
+        <h4 className="orders-title m-0">{t('admin:dashboard.ownerDashboard')}</h4>
         {renderActionButton()}
       </div>
       

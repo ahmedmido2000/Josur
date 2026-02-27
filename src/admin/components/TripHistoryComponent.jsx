@@ -344,7 +344,8 @@ const TripHistoryComponent = () => {
             <div className="mb-3">
               <div className="select-wrapper position-relative">
                 <select
-                  className="form-select form-input py-2 pe-3"
+                  className="form-select form-input py-2"
+                  style={{ paddingInlineEnd: '2.2rem' }}
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
                 >
@@ -353,7 +354,7 @@ const TripHistoryComponent = () => {
                     <option key={key} value={key}>{name}</option>
                   ))}
                 </select>
-                <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+                <div className="select-icon position-absolute top-50 translate-middle-y pe-1" style={{ insetInlineEnd: 0, pointerEvents: 'none' }}>
                   <ExpandMoreIcon />
                 </div>
               </div>
@@ -365,7 +366,8 @@ const TripHistoryComponent = () => {
             <div className="mb-3">
               <div className="select-wrapper position-relative">
                 <select
-                  className="form-select form-input py-2 pe-3"
+                  className="form-select form-input py-2"
+                  style={{ paddingInlineEnd: '2.2rem' }}
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                 >
@@ -374,7 +376,7 @@ const TripHistoryComponent = () => {
                     <option key={s.id} value={s.id}>{isRtl ? s.name : s.name_en}</option>
                   ))}
                 </select>
-                <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+                <div className="select-icon position-absolute top-50 translate-middle-y pe-1" style={{ insetInlineEnd: 0, pointerEvents: 'none' }}>
                   <ExpandMoreIcon />
                 </div>
               </div>
@@ -386,7 +388,8 @@ const TripHistoryComponent = () => {
             <div className="mb-3">
               <div className="select-wrapper position-relative">
                 <select
-                  className="form-select form-input py-2 pe-3"
+                  className="form-select form-input py-2"
+                  style={{ paddingInlineEnd: '2.2rem' }}
                   value={periodFilter}
                   onChange={(e) => setPeriodFilter(e.target.value)}
                 >
@@ -394,7 +397,7 @@ const TripHistoryComponent = () => {
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
-                <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+                <div className="select-icon position-absolute top-50 translate-middle-y pe-1" style={{ insetInlineEnd: 0, pointerEvents: 'none' }}>
                   <ExpandMoreIcon />
                 </div>
               </div>

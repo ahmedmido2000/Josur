@@ -77,7 +77,8 @@ const DriversComponent = () => {
           <div className="col-md-3 mb-2">
             <div className="select-wrapper position-relative">
               <select
-                className="form-select form-input py-2 pe-3"
+                className="form-select form-input py-2"
+                style={{ paddingInlineEnd: '2.2rem' }}
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -86,7 +87,7 @@ const DriversComponent = () => {
                   <option key={key} value={key}>{label}</option>
                 ))}
               </select>
-              <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+              <div className="select-icon position-absolute top-50 translate-middle-y pe-1" style={{ insetInlineEnd: 0, pointerEvents: 'none' }}>
                 <ExpandMoreIcon />
               </div>
             </div>

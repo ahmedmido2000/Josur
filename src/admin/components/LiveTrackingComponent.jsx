@@ -4,6 +4,7 @@ import { faCircle, faChevronDown, faChevronUp, faEnvelope, faTriangleExclamation
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -16,6 +17,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 const LiveTrackingComponent = () => {
+        const { t, i18n } = useTranslation(['admin']);
+        const isRtl = i18n.language === 'ar';
         // State for map markers
         const [pickupLocation, setPickupLocation] = useState([24.7136, 46.6753]); // Default to Riyadh, Saudi Arabia
         const [deliveryLocation, setDeliveryLocation] = useState([24.7136, 46.6753]); // Default to Riyadh, Saudi Arabia
@@ -50,15 +53,15 @@ const LiveTrackingComponent = () => {
   return (
     <div className="vehicles-content mt-2">
       <div className="shadow p-2 rounded-3">
-        <h4 className="orders-title m-0">تتبع المركبات المباشر</h4>
+        <h4 className="orders-title m-0">{t('admin:liveTracking.title')}</h4>
         <div className="row mt-2">
             <div className="col-md-9 mb-2">
             <div className="position-relative">
   <input
     type="text"
     className="form-control form-input py-2"
-    style={{paddingRight:'35px'}}
-    placeholder="البحث عن السائق ..."
+    style={{paddingInlineStart:'35px'}}
+    placeholder={t('admin:liveTracking.searchPlaceholder')}
   />
 
   <span className="search-input-icon">
@@ -70,10 +73,10 @@ const LiveTrackingComponent = () => {
             <div className="col-md-3 mb-2">
             <div className="mb-3">
                                             <div className="select-wrapper position-relative">
-    <select className="form-select form-input py-2 pe-3">
-        <option value="كل الحالات">كل الحالات</option>
+    <select className="form-select form-input py-2" style={{ paddingInlineEnd: '2.2rem' }}>
+        <option value="">{t('admin:liveTracking.allStatuses')}</option>
     </select>
-    <div className="select-icon position-absolute start-0 top-50 translate-middle-y ps-2">
+    <div className="select-icon position-absolute top-50 translate-middle-y pe-1" style={{ insetInlineEnd: 0, pointerEvents: 'none' }}>
         <ExpandMoreIcon />
     </div>
 </div>
@@ -252,7 +255,7 @@ const LiveTrackingComponent = () => {
                 </div>
             </div>
             <div className="col-md-7">
-            <h2 className='orders-title'>عرض الخريطة</h2>
+            <h2 className='orders-title'>{t('admin:liveTracking.mapView')}</h2>
             <div className="mt-1 pb-3 h-100">
               <MapComponent />
             </div>

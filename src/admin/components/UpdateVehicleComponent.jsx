@@ -156,16 +156,25 @@ const UpdateVehicleComponent = ({ vehicleId }) => {
 
     return (
         <div className="settings-content">
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1"
+                onClick={() => navigate(-1)}
+              >
+                <i className="fas fa-arrow-left"></i> {t('common:buttons.back')}
+              </button>
+            </div>
             <h4 className="orders-title m-0">{t('drivers.ownerDashboard')}</h4>
 
             <form onSubmit={handleSubmit} className="p-3 mt-2 shadow rounded-2 bg-white">
                 <div className="d-flex gap-1 align-items-center mb-2">
                     <i className="fas fa-truck text-primary fs-4"></i>
-                    <h4 className="orders-title m-0">{isRtl ? 'تعديل بيانات المركبة' : 'Update Vehicle Data'}</h4>
+                    <h4 className="orders-title m-0">{t('updateVehicle.title')}</h4>
                 </div>
 
                 <p className="months-filter-item m-0 mb-3 text-muted">
-                    {isRtl ? 'قم بتحديث المعلومات والوثائق الخاصة بالمركبة' : 'Update the vehicle information and documents'}
+                    {t('updateVehicle.subtitle')}
                 </p>
 
                 <h6 className="form-label mb-3 fw-bold border-bottom pb-2">{t('addVehicle.basicInfo')}</h6>

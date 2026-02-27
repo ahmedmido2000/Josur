@@ -141,6 +141,15 @@ const AddTruckComponent = () => {
 
   return (
     <div className="settings-content">
+      <div className="d-flex align-items-center gap-2 mb-1">
+        <button
+          type="button"
+          className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1"
+          onClick={() => navigate(-1)}
+        >
+          <i className="fas fa-arrow-left"></i> {t('common:buttons.back')}
+        </button>
+      </div>
       <h4 className="orders-title m-0">{t('drivers.ownerDashboard')}</h4>
 
       <form onSubmit={handleSubmit} className="p-3 mt-2 shadow rounded-2 bg-white">

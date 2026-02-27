@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAddDriverMutation } from '../../api/admin/adminApi';
 import { useGetListsQuery } from '../../api/auth/authApi';
 
@@ -11,6 +11,7 @@ const AddDriverComponent = () => {
   const [addDriver, { isLoading: isAdding }] = useAddDriverMutation();
   const { data: listsData } = useGetListsQuery();
   const location = useLocation();
+  const navigate = useNavigate();
   const prefill = location.state?.prefill || {};
 
   const initialState = {
@@ -101,6 +102,15 @@ const AddDriverComponent = () => {
 
   return (
     <div className="settings-content">
+      <div className="d-flex align-items-center gap-2 mb-1">
+        <button
+          type="button"
+          className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1"
+          onClick={() => navigate(-1)}
+        >
+          <i className="fas fa-arrow-left"></i> {t('common:buttons.back')}
+        </button>
+      </div>
       <h4 className="orders-title m-0">{t('admin:drivers.ownerDashboard')}</h4>
 
       <div className="p-4 mt-2 shadow rounded-2 bg-white">
