@@ -145,6 +145,7 @@ export const API_ENDPOINTS = {
   ADD_VEHICLE: '/api/web/v1/site/add-vehicle',
   UPDATE_VEHICLE: '/api/web/v1/site/update-vehicle',
   VIEW_VEHICLE: '/api/web/v1/site/veiw-vehicle',
+  COMPANY_ORDER: '/api/web/v1/site/company-order',
 
   // Site
   SITE_HOME: '/api/web/v1/site/home-web',

@@ -219,6 +219,20 @@ export const adminApi = baseApi.injectEndpoints({
       }),
       providesTags: ['Admin'],
     }),
+
+    /**
+     * Get Company Orders (Trip History)
+     * POST /api/web/v1/site/company-order
+     * Body: { type, status, date_from, date_to }
+     */
+    getCompanyOrders: builder.mutation({
+      query: (filters = {}) => ({
+        url: API_ENDPOINTS.COMPANY_ORDER,
+        method: 'POST',
+        params: { 'access-token': localStorage.getItem('josur_auth_token') },
+        body: filters,
+      }),
+    }),
   }),
 });
 
@@ -240,4 +254,5 @@ export const {
   useGetCompanyVehiclesMutation,
   useUpdateVehicleMutation,
   useViewVehicleQuery,
+  useGetCompanyOrdersMutation,
 } = adminApi;
