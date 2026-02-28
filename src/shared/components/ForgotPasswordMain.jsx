@@ -1,36 +1,25 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useGetHomeDataQuery } from '../../api/site/siteApi';
 import { usePasswordResetMutation } from '../../api/auth/authApi';
 
 const ForgotPasswordMain = () => {
     const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
+    const [messageKey, setMessageKey] = useState('');
+    const [errorKey, setErrorKey] = useState('');
 
-    const { t, i18n } = useTranslation(['auth', 'common']);
-    const { data: homeData, isLoading: isHomeLoading } = useGetHomeDataQuery();
+    const { t } = useTranslation(['auth', 'common']);
+
     const [passwordReset, { isLoading: isResetLoading }] = usePasswordResetMutation();
-
-    // Helper to get localized field from API
-    const getLangField = (item, field) => {
-        if (!item) return '';
-        const isEn = i18n.language === 'en';
-        const enField = `${field}_en`;
-        return (isEn && item[enField]) ? item[enField] : item[field];
-    };
-
-    // Use login section as style template or custom title
-    const loginSection = homeData?.Sections?.find(s => s.id === 69);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-        setMessage('');
+        setErrorKey('');
+        setMessageKey('');
 
         if (!email) {
-            setError(i18n.language === 'en' ? 'Email is required' : 'البريد الإلكتروني مطلوب');
+            setErrorKey('auth:forgotPassword.emailRequired');
             return;
         }
 
@@ -39,16 +28,18 @@ const ForgotPasswordMain = () => {
             
             // Extract message from nested structure: response.data[0].message
             const apiData = response.status === 1 && response.data?.[0] ? response.data[0] : null;
-            const apiMessage = apiData?.message || response.message;
 
             if (response.status === 1 && apiData?.status === 1) {
-                setMessage(apiMessage || (i18n.language === 'en' ? 'Reset link sent to your email' : 'تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني'));
-                setEmail('');
+                setMessageKey('auth:forgotPassword.success');
+                // Redirect to reset-password page after a short delay, passing email
+                setTimeout(() => {
+                    navigate('/reset-password', { state: { email } });
+                }, 1500);
             } else {
-                setError(apiMessage || (i18n.language === 'en' ? 'Failed to process request' : 'نسور! فشل في معالجة طلبك'));
+                setErrorKey('auth:forgotPassword.error');
             }
-        } catch (err) {
-            setError(err.data?.message || (i18n.language === 'en' ? 'An error occurred' : 'حدث خطأ ما'));
+        } catch {
+            setErrorKey('auth:forgotPassword.genericError');
         }
     };
 
@@ -70,8 +61,8 @@ const ForgotPasswordMain = () => {
                         <span>{t('common:buttons.or')}</span>
                     </div>
 
-                    {error && <div className="alert alert-danger py-2 w-100 text-center" style={{ fontSize: '14px' }}>{error}</div>}
-                    {message && <div className="alert alert-success py-2 w-100 text-center" style={{ fontSize: '14px' }}>{message}</div>}
+                    {errorKey && <div className="alert alert-danger py-2 w-100 text-center" style={{ fontSize: '14px' }}>{t(errorKey)}</div>}
+                    {messageKey && <div className="alert alert-success py-2 w-100 text-center" style={{ fontSize: '14px' }}>{t(messageKey)}</div>}
 
                     <div className="login-form w-100">
                         <div className="mb-3">
@@ -98,7 +89,7 @@ const ForgotPasswordMain = () => {
 
                         <div className="text-center mt-3">
                             <Link to='/login' className="register-link text-decoration-none">
-                                {i18n.language === 'en' ? 'Back to Login' : 'العودة لتسجيل الدخول'}
+                                {t('auth:forgotPassword.backToLogin')}
                             </Link>
                         </div>
                     </div>

@@ -12,6 +12,7 @@ import Login from "./shared/pages/Login";
 import Register from "./shared/pages/Register";
 import ActivateAccount from "./shared/pages/ActivateAccount";
 import ForgotPassword from "./shared/pages/ForgotPassword";
+import ResetPassword from "./shared/pages/ResetPassword";
 import Contact from "./shared/pages/Contact";
 import ServiceProvider from "./shared/pages/ServiceProvider";
 import Works from "./shared/pages/Works";
@@ -70,6 +71,7 @@ function App() {
       <Route path="/create-account" element={<PublicRoute><Register /></PublicRoute>} />
       <Route path="/activate-account" element={<PublicRoute><ActivateAccount /></PublicRoute>} />
       <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+      <Route path="/reset-password" element={<PublicRoute><ResetPassword /></PublicRoute>} />
       
       {/* User Routes - Only accessible to authenticated users with 'user' role */}
       <Route path="/user/orders" element={<RoleBasedRoute allowedRoles={[USER_ROLES.USER]}><Oreders /></RoleBasedRoute>} />
