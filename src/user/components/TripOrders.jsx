@@ -215,7 +215,7 @@ const TripOrders = ({ activeSubFilter, offersExpanded, toggleOffers, setShowRati
                               {/* Right Part (Child 1): Price */}
                               <div className="d-flex align-items-baseline gap-1">
                                 <span className='fw-bold fs-3 text-primary'>{offer.price}</span>
-                                <span className='fw-bold text-primary'>{t('common:currency') || '$'}</span>
+                                <span className='fw-bold text-primary'>{t('common:') || '$'}</span>
                               </div>
 
                               {/* Left Part (Child 2): Accept Button */}
